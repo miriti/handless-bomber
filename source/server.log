@@ -1,0 +1,37 @@
+Document root: ../release
+Server will be shut down after 300 seconds after the last request
+Server started at http://127.0.0.1:8888
+GET /
+GET /game.js
+GET /data/sprite.png
+GET /
+GET /game.js
+GET /data/sprite.png
+GET /
+GET /game.js
+GET /data/sprite.png
+GET /
+GET /game.js
+GET /data/sprite.png
+Server is shutting down due to timeout
+Document root: ../release
+Server will be shut down after 300 seconds after the last request
+Server started at http://127.0.0.1:8888
+GET /
+GET /game.js
+GET /data/sprite.png
+GET /
+GET /game.js
+GET /data/sprite.png
+GET /
+GET /game.js
+GET /data/sprite.png
+GET /
+GET /game.js
+GET /data/sprite.png
+GET /
+GET /game.js
+GET /data/sprite.png
+GET /
+GET /game.js
+GET /data/sprite.png

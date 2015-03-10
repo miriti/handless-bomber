@@ -1,0 +1,17 @@
+[
+  "Init.js",
+  "core/Input.js",
+  "core/GameObject.js",
+  "core/Scene.js",
+  "mobs/Mob.js",
+  "mobs/Player.js",
+  "maps/tiles/Tile.js",
+  "maps/tiles/SolidWall.js",
+  "maps/tiles/BrickWall.js",
+  "maps/Map.js",
+  "ui/UI.js",
+  "ui/Menu.js",
+  "scenes/Scenes.js",
+  "scenes/Game.js",
+  "Main.js"
+]

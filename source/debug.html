@@ -1,7 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
 <body>
-<script src="src/Init.js"></script>
-<script src="src/Main.js"></script>
+<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="src/lib/pixi/bin/pixi.js"></script>
+<script>
+    var currentScript = 0;
+    var list = [];
+
+    function appendScript() {
+        if (currentScript < list.length) {
+            $.getScript('src/' + list[currentScript]).done(function () {
+                currentScript++;
+                appendScript();
+            }).fail(function () {
+                console.log(list[currentScript], arguments);
+            });
+        }
+    }
+
+    $(function () {
+        $.getJSON("list.json", function (json) {
+            list = json;
+            appendScript();
+        });
+    });
+</script>
 </body>
 </html>

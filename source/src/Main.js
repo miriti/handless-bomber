@@ -1,5 +1,72 @@
-Game.run = function () {
+Game.timestamp = null;
+Game.lastTimestamp = null;
+Game._currentScene = null;
+Game._sceneStack = [];
 
+/**
+ * Set the current scene of the game
+ *
+ * @param scene
+ */
+Game.setCurrentScene = function (scene) {
+    if (this._currentScene !== null) {
+        this.stage.removeChild(this._currentScene);
+        this._sceneStack.push(this._currentScene);
+    }
+    this._currentScene = scene;
+    this.stage.addChild(this._currentScene);
+};
+
+/**
+ * Frame
+ */
+Game.animationFrame = function () {
+    this.timestamp = new Date().getTime();
+    var delta = this.lastTimestamp === null ? 0 : (this.timestamp - this.lastTimestamp) / 1000;
+    this.lastTimestamp = this.timestamp;
+
+    if (this._currentScene !== null) {
+        this._currentScene.update(delta);
+    }
+
+    this.renderer.render(this.stage);
+    requestAnimationFrame(Game.animationFrame.bind(Game));
+};
+
+/**
+ * Resize the game
+ *
+ * @param width
+ * @param height
+ */
+Game.resize = function (width, height) {
+    this.renderer.resize(width, height);
+    this.stage.x = width / 2;
+    this.stage.y = height / 2;
+};
+
+/**
+ * Run the game
+ */
+Game.run = function () {
+    this.renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight);
+    this.renderer.backgroundColor = 0x061639;
+    this.renderer.antialias = false;
+    document.body.appendChild(this.renderer.view);
+
+    this.stage = new PIXI.Container();
+    this.stage.x = window.innerWidth / 2;
+    this.stage.y = window.innerHeight / 2;
+
+    PIXI.CONST.SCALE_MODES.DEFAULT = PIXI.CONST.SCALE_MODES.NEAREST;
+
+    this.setCurrentScene(new Game.UI.MenuMain());
+
+    this.animationFrame();
+
+    window.onresize = function () {
+        Game.resize(window.innerWidth, window.innerHeight);
+    };
 };
 
 Game.run();
