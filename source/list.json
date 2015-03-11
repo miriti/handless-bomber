@@ -12,6 +12,7 @@
   "maps/Map.js",
   "mobs/Mob.js",
   "mobs/Player.js",
+  "mobs/Enemy.js",
   "ui/UI.js",
   "ui/Menu.js",
   "scenes/Scenes.js",

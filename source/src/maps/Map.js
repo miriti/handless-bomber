@@ -1,34 +1,53 @@
 Game.maps = {};
 
+/**
+ *
+ * @constructor
+ * @extends Game.GameObject
+ */
 Game.maps.Map = function () {
     Game.GameObject.call(this);
     this.grid = [];
 
+    this.gridWidth = 21;
+    this.gridHeight = 11;
+
     var floor = new PIXI.Graphics();
     floor.beginFill(0x784a8e);
-    floor.drawRect(-Game.tiles.SIZE / 2, -Game.tiles.SIZE / 2, 20 * Game.tiles.SIZE, 11 * Game.tiles.SIZE);
+    floor.drawRect(-Game.tiles.SIZE / 2, -Game.tiles.SIZE / 2, this.gridWidth * Game.tiles.SIZE, this.gridHeight * Game.tiles.SIZE);
     floor.endFill();
     this.addChild(floor);
 
-    this.initGrid(20, 11);
+    this.initGrid(this.gridWidth, this.gridHeight);
 
-    for (var h = 0; h < 20; h++) {
+    for (var h = 0; h < this.gridWidth; h++) {
         this.putTile(new Game.tiles.SolidWall(), h, 0);
-        this.putTile(new Game.tiles.SolidWall(), h, 10);
+        this.putTile(new Game.tiles.SolidWall(), h, this.gridHeight - 1);
     }
 
     for (var v = 0; v < 10; v++) {
         this.putTile(new Game.tiles.SolidWall(), 0, v);
-        this.putTile(new Game.tiles.SolidWall(), 19, v);
+        this.putTile(new Game.tiles.SolidWall(), this.gridWidth - 1, v);
     }
 
-    for (var i = 0; i < 10; i++) {
-        for (var j = 0; j < 5; j++) {
+    for (var i = 0; i < this.gridWidth / 2; i++) {
+        for (var j = 0; j < this.gridHeight / 2; j++) {
             this.putTile(new Game.tiles.SolidWall(), i * 2, j * 2);
         }
     }
 
     this.rndBrickWalls();
+
+    for (var n = 0; n < 5; n++) {
+        var enemy = new Game.mobs.Enemy();
+
+        do {
+            var cellX = Math.round(this.gridWidth * Math.random());
+            var cellY = Math.round(this.gridHeight * Math.random());
+        } while (this.getTile(cellX, cellY) !== false);
+
+        this.putMob(enemy, cellX, cellY);
+    }
 };
 
 extend(Game.maps.Map, Game.GameObject, {

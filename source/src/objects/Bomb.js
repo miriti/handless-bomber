@@ -29,6 +29,7 @@ extend(Game.objects.Bomb, Game.MapObject, {
         Game.MapObject.prototype.update.call(this, delta);
 
         if (this.time <= 0) {
+            Game._currentScene.shake(10, 0.5);
             // TODO go off animation
             for (var h = this.cell.x - this.power; h <= this.cell.x + this.power; h++) {
                 this.bombTile(h, this.cell.y);
