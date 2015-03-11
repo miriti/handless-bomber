@@ -10,6 +10,7 @@ Game.Input = {
         CAPS_LOCK: 20,
         ESCAPE: 27,
         PAGE_UP: 33,
+        SPACE: 32,
         PAGE_DOWN: 34,
         END: 35,
         HOME: 36,
@@ -112,6 +113,9 @@ Game.Input = {
     },
     _keyUp: function (e) {
         this._pressed[e.keyCode] = null;
+    },
+    key: function (key) {
+        return this._pressed[key];
     },
     up: function () {
         return this._pressed[this.Keys.W] || this._pressed[this.Keys.UP_ARROW];

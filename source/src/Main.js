@@ -21,12 +21,21 @@ Game.setCurrentScene = function (scene) {
  * Frame
  */
 Game.animationFrame = function () {
+    var requestedDelta = 1000 / 60 / 1000;
+
     this.timestamp = new Date().getTime();
     var delta = this.lastTimestamp === null ? 0 : (this.timestamp - this.lastTimestamp) / 1000;
     this.lastTimestamp = this.timestamp;
 
     if (this._currentScene !== null) {
-        this._currentScene.update(delta);
+        if (delta > requestedDelta) {
+            while (delta > requestedDelta) {
+                this._currentScene.update(requestedDelta);
+                delta -= requestedDelta;
+            }
+        } else {
+            this._currentScene.update(delta);
+        }
     }
 
     this.renderer.render(this.stage);

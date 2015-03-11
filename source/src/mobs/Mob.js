@@ -6,10 +6,10 @@ Game.mobs = {};
  * @extends Game.GameObject
  */
 Game.mobs.Mob = function () {
-    Game.GameObject.call(this);
+    Game.MapObject.call(this);
 };
 
-extend(Game.mobs.Mob, Game.GameObject, {
+extend(Game.mobs.Mob, Game.MapObject, {
     /**
      * Resolve collision
      *
@@ -31,6 +31,9 @@ extend(Game.mobs.Mob, Game.GameObject, {
     collision: function (offsetX, offsetY, tile) {
         this._resolveCollision(offsetX, offsetY);
     },
+    touchingTiles: function () {
+        return this.parent.selectTilesRect(this.x - this.bW / 2, this.y - this.bH / 2, this.bW, this.bH);
+    },
     /**
      * Update mobs state
      * @param delta
@@ -39,7 +42,7 @@ extend(Game.mobs.Mob, Game.GameObject, {
         Game.GameObject.prototype.update.call(this, delta);
 
         if ((this.parent) && (this.parent instanceof Game.maps.Map)) {
-            var touchingTiles = this.parent.selectTilesRect(this.x - this.bW / 2, this.y - this.bH / 2, this.bW, this.bH);
+            var touchingTiles = this.touchingTiles();
 
             for (var i in touchingTiles) {
                 var t = touchingTiles[i];
@@ -70,5 +73,7 @@ extend(Game.mobs.Mob, Game.GameObject, {
                 }
             }
         }
+
+        this.cell.set(Math.round(this.x / Game.tiles.SIZE), Math.round(this.y / Game.tiles.SIZE));
     }
 });

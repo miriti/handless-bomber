@@ -9,7 +9,7 @@ Game.Scenes.Game = function () {
 
     this.player = new Game.mobs.Player();
     this.map = new Game.maps.Map();
-    this.map.putMob(this.player, 1, 0, true);
+    this.map.putMob(this.player, 1, 1, true);
     this.addChild(this.map);
 };
 

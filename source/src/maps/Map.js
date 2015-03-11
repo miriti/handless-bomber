@@ -4,7 +4,23 @@ Game.maps.Map = function () {
     Game.GameObject.call(this);
     this.grid = [];
 
-    this.initGrid(20, 10);
+    var floor = new PIXI.Graphics();
+    floor.beginFill(0x784a8e);
+    floor.drawRect(-Game.tiles.SIZE / 2, -Game.tiles.SIZE / 2, 20 * Game.tiles.SIZE, 11 * Game.tiles.SIZE);
+    floor.endFill();
+    this.addChild(floor);
+
+    this.initGrid(20, 11);
+
+    for (var h = 0; h < 20; h++) {
+        this.putTile(new Game.tiles.SolidWall(), h, 0);
+        this.putTile(new Game.tiles.SolidWall(), h, 10);
+    }
+
+    for (var v = 0; v < 10; v++) {
+        this.putTile(new Game.tiles.SolidWall(), 0, v);
+        this.putTile(new Game.tiles.SolidWall(), 19, v);
+    }
 
     for (var i = 0; i < 10; i++) {
         for (var j = 0; j < 5; j++) {
@@ -72,7 +88,7 @@ extend(Game.maps.Map, Game.GameObject, {
      */
     removeTile: function (atX, atY) {
         if ((atX >= 0) && (atX < this.grid.length) && (atY >= 0) && (atY < this.grid[0].length)) {
-            if ((this.grid[atX][atY] !== false) && (this.grid[atX][atY] instanceof Game.tiles.Tile)) {
+            if (this.grid[atX][atY] !== false) {
                 if (!(this.grid[atX][atY] instanceof Game.tiles.SolidWall)) {
                     this.removeChild(this.grid[atX][atY]);
                     this.grid[atX][atY] = false;
@@ -135,5 +151,11 @@ extend(Game.maps.Map, Game.GameObject, {
         }
 
         return result;
+    },
+    getTile: function (atX, atY) {
+        if ((atX >= 0) && (atX < this.grid.length) && (atY >= 0) && (atY < this.grid[0].length)) {
+            return this.grid[atX][atY];
+        }
+        return null;
     }
 });
