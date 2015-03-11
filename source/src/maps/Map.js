@@ -59,8 +59,9 @@ extend(Game.maps.Map, Game.GameObject, {
      */
     putTile: function (tile, atX, atY) {
         this.grid[atX][atY] = tile;
-        tile.x = atX * 50;
-        tile.y = atY * 50;
+        tile.x = atX * Game.tiles.SIZE;
+        tile.y = atY * Game.tiles.SIZE;
+        tile.cell.set(atX, atY);
         this.addChild(tile);
     },
     /**
@@ -97,8 +98,42 @@ extend(Game.maps.Map, Game.GameObject, {
             }
         }
 
-        mob.x = atX * 50;
-        mob.y = atY * 50;
+        mob.x = atX * Game.tiles.SIZE;
+        mob.y = atY * Game.tiles.SIZE;
         this.addChild(mob);
+    },
+    /**
+     * Select tiles from map inside the rectangle
+     *
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @returns {Array}
+     */
+    selectTilesRect: function (x, y, w, h) {
+        var result = [];
+        var fromX = Math.round(x / Game.tiles.SIZE);
+        var fromY = Math.round(y / Game.tiles.SIZE);
+        var toX = Math.round((x + w) / Game.tiles.SIZE);
+        var toY = Math.round((y + h) / Game.tiles.SIZE);
+
+        if (fromX < 0)
+            fromX = 0;
+        if (fromY < 0)
+            fromY = 0;
+
+        if (toX >= this.grid.length)
+            toX = this.grid.length - 1;
+        if (toY >= this.grid[0].length)
+            toY = this.grid[0].length - 1;
+
+        for (var i = fromX; i <= toX; i++) {
+            for (var j = fromY; j <= toY; j++) {
+                result.push(this.grid[i][j]);
+            }
+        }
+
+        return result;
     }
 });

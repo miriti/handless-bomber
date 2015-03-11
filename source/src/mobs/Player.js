@@ -6,10 +6,9 @@
 Game.mobs.Player = function () {
     Game.mobs.Mob.call(this);
 
-    var g = new PIXI.Graphics();
-    g.beginFill(0x7788aa);
-    g.drawRect(-20, -20, 40, 40);
-    g.endFill();
+    this.bW = this.bH = 40;
+
+    var g = this.genQuad(0x7788aa);
 
     this.addChild(g);
 };
@@ -22,8 +21,6 @@ extend(Game.mobs.Player, Game.mobs.Mob);
  * @override
  */
 Game.mobs.Player.prototype.update = function (delta) {
-    Game.mobs.Mob.prototype.update.call(this, delta);
-
     if (Game.Input.left())
         this.x -= 200 * delta;
 
@@ -35,4 +32,6 @@ Game.mobs.Player.prototype.update = function (delta) {
 
     if (Game.Input.down())
         this.y += 200 * delta;
+    
+    Game.mobs.Mob.prototype.update.call(this, delta);
 };
