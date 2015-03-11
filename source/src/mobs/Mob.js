@@ -37,6 +37,7 @@ extend(Game.mobs.Mob, Game.GameObject, {
      */
     update: function (delta) {
         Game.GameObject.prototype.update.call(this, delta);
+
         if ((this.parent) && (this.parent instanceof Game.maps.Map)) {
             var touchingTiles = this.parent.selectTilesRect(this.x - this.bW / 2, this.y - this.bH / 2, this.bW, this.bH);
 
@@ -45,28 +46,24 @@ extend(Game.mobs.Mob, Game.GameObject, {
                 if ((t !== false) && (!t.passable)) {
                     var dx = this.x - t.x;
                     var dy = this.y - t.y;
-                    var mindx = this.bW / 2 + Game.tiles.SIZE / 2;
-                    var mindy = this.bH / 2 + Game.tiles.SIZE / 2;
+                    var minDx = this.bW / 2 + Game.tiles.SIZE / 2;
+                    var minDy = this.bH / 2 + Game.tiles.SIZE / 2;
 
-                    if ((Math.abs(dx) < mindx) && (Math.abs(dy) < mindy)) {
-                        var offsetx = mindx - Math.abs(dx);
-                        var offsety = mindy - Math.abs(dy);
+                    if ((Math.abs(dx) < minDx) && (Math.abs(dy) < minDy)) {
+                        var offsetX = minDx - Math.abs(dx);
+                        var offsetY = minDy - Math.abs(dy);
 
-                        if (Math.abs(offsetx) > Math.abs(offsety)) {
+                        if (Math.abs(offsetX) > Math.abs(offsetY)) {
                             if (dy < 0) {
-                                this.y -= offsety;
-                                this.collision(0, -offsety, t);
+                                this.collision(0, -offsetY, t);
                             } else {
-                                this.y += offsety;
-                                this.collision(0, offsety, t);
+                                this.collision(0, offsetY, t);
                             }
                         } else {
                             if (dx < 0) {
-                                this.x -= offsetx;
-                                this.collision(-offsetx, 0, t);
+                                this.collision(-offsetX, 0, t);
                             } else {
-                                this.x += offsetx;
-                                this.collision(offsetx, 0, t);
+                                this.collision(offsetX, 0, t);
                             }
                         }
                     }

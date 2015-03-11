@@ -9,6 +9,7 @@ Game.tiles.SIZE = 50;
  */
 Game.tiles.Tile = function () {
     Game.GameObject.call(this);
+    this.bW = this.bH = Game.tiles.SIZE;
     this.cell = new PIXI.math.Point(0, 0);
     this.passable = true;
 };

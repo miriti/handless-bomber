@@ -32,6 +32,6 @@ Game.mobs.Player.prototype.update = function (delta) {
 
     if (Game.Input.down())
         this.y += 200 * delta;
-    
+
     Game.mobs.Mob.prototype.update.call(this, delta);
 };
