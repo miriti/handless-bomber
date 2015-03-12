@@ -12,4 +12,9 @@ Game.tiles.Tile = function () {
     this.bW = this.bH = Game.tiles.SIZE;
     this.passable = true;
 };
-extend(Game.tiles.Tile, Game.MapObject);
+extend(Game.tiles.Tile, Game.MapObject, {
+    touch: function(mob) {
+    },
+    explode: function() {
+    }
+});

@@ -38,8 +38,8 @@ extend(Game.mobs.Enemy, Game.mobs.Mob, {
         this.chooseDirection();
     },
     update: function (delta) {
-        this.x += this.direction.x * (200 * delta);
-        this.y += this.direction.y * (200 * delta);
+        this.x += this.direction.x * (100 * delta);
+        this.y += this.direction.y * (100 * delta);
 
         Game.mobs.Mob.prototype.update.call(this, delta);
     }

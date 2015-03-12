@@ -1,6 +1,6 @@
 Game.timestamp = null;
 Game.lastTimestamp = null;
-Game._currentScene = null;
+Game.currentScene = null;
 Game._sceneStack = [];
 
 /**
@@ -9,12 +9,12 @@ Game._sceneStack = [];
  * @param scene
  */
 Game.setCurrentScene = function (scene) {
-    if (this._currentScene !== null) {
-        this.stage.removeChild(this._currentScene);
-        this._sceneStack.push(this._currentScene);
+    if (this.currentScene !== null) {
+        this.stage.removeChild(this.currentScene);
+        this._sceneStack.push(this.currentScene);
     }
-    this._currentScene = scene;
-    this.stage.addChild(this._currentScene);
+    this.currentScene = scene;
+    this.stage.addChild(this.currentScene);
 };
 
 /**
@@ -27,14 +27,14 @@ Game.animationFrame = function () {
     var delta = this.lastTimestamp === null ? 0 : (this.timestamp - this.lastTimestamp) / 1000;
     this.lastTimestamp = this.timestamp;
 
-    if (this._currentScene !== null) {
+    if (this.currentScene !== null) {
         if (delta > requestedDelta) {
             while (delta > requestedDelta) {
-                this._currentScene.update(requestedDelta);
+                this.currentScene.update(requestedDelta);
                 delta -= requestedDelta;
             }
         } else {
-            this._currentScene.update(delta);
+            this.currentScene.update(delta);
         }
     }
 

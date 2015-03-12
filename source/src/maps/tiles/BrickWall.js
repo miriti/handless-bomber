@@ -10,4 +10,8 @@ Game.tiles.BrickWall = function () {
     this.addChild(this.genQuad(0xd4776a));
 };
 
-extend(Game.tiles.BrickWall, Game.tiles.Tile);
+extend(Game.tiles.BrickWall, Game.tiles.Tile, {
+    explode: function () {
+        this.parent.removeTile(this.cell.x, this.cell.y);
+    }
+});

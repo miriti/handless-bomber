@@ -16,6 +16,9 @@ Game.mobs.Player = function () {
 };
 
 extend(Game.mobs.Player, Game.mobs.Mob, {
+    die: function () {
+
+    },
     /**
      * Players collisions
      *
@@ -40,6 +43,7 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
         b.y = this.cell.y * Game.tiles.SIZE;
 
         this.lastBombTile.bomb = b;
+        b.tile = this.lastBombTile;
 
         this.parent.addChild(b);
     },
