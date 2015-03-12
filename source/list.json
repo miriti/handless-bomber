@@ -12,6 +12,7 @@
   "maps/tiles/BrickWall.js",
   "maps/tiles/BombTile.js",
   "maps/tiles/Fire.js",
+  "maps/tiles/Door.js",
   "maps/Map.js",
   "mobs/Mob.js",
   "mobs/Player.js",

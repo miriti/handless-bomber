@@ -11,9 +11,8 @@ Game.mobs.Mob = function () {
 
 extend(Game.mobs.Mob, Game.MapCollisionObject, {
     die: function () {
-        console.log(this, this.parent);
         if (this.parent)
-            this.parent.removeChild(this);
+            this.parent.removeMob(this);
     },
     /**
      * Update mobs state

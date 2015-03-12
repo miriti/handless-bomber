@@ -21,7 +21,10 @@ extend(Game.objects.Bomb, Game.MapObject, {
     bombTile: function (atX, atY) {
         var t = this.parent.getTile(atX, atY);
 
-        if (t instanceof Game.tiles.Fire) return true;
+        if (t instanceof Game.tiles.Fire) {
+            t._time = 0.5;
+            return true;
+        }
 
         if ((t !== this.tile) && (t instanceof Game.tiles.BombTile)) {
             t.bomb.time = 0.05;

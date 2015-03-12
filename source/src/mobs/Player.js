@@ -33,19 +33,23 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
         this._resolveCollision(offsetX, offsetY);
     },
     layBomb: function () {
-        this.lastBombTile = new Game.tiles.BombTile();
-        this.parent.putTile(this.lastBombTile, this.cell.x, this.cell.y);
+        var t = this.parent.getTile(this.cell.x, this.cell.y);
 
-        var b = new Game.objects.Bomb();
-        b.cell.x = this.cell.x;
-        b.cell.y = this.cell.y;
-        b.x = this.cell.x * Game.tiles.SIZE;
-        b.y = this.cell.y * Game.tiles.SIZE;
+        if (t === false) {
+            this.lastBombTile = new Game.tiles.BombTile();
+            this.parent.putTile(this.lastBombTile, this.cell.x, this.cell.y);
 
-        this.lastBombTile.bomb = b;
-        b.tile = this.lastBombTile;
+            var b = new Game.objects.Bomb();
+            b.cell.x = this.cell.x;
+            b.cell.y = this.cell.y;
+            b.x = this.cell.x * Game.tiles.SIZE;
+            b.y = this.cell.y * Game.tiles.SIZE;
 
-        this.parent.addChild(b);
+            this.lastBombTile.bomb = b;
+            b.tile = this.lastBombTile;
+
+            this.parent.addChild(b);
+        }
     },
     /**
      * Update player's state

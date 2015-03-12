@@ -8,6 +8,8 @@ Game.maps = {};
 Game.maps.Map = function () {
     Game.GameObject.call(this);
     this.grid = [];
+    this.mobs = [];
+    this.cleared = false;
 
     this.gridWidth = 21;
     this.gridHeight = 11;
@@ -75,15 +77,20 @@ extend(Game.maps.Map, Game.GameObject, {
         }
     },
     rndBrickWalls: function () {
+        var bricks = [];
         for (var i = 0; i < this.grid.length; i++) {
             for (var j = 0; j < this.grid[i].length; j++) {
                 if (this.grid[i][j] === false) {
                     if (Math.random() > 0.7) {
-                        this.putTile(new Game.tiles.BrickWall(), i, j);
+                        var b = new Game.tiles.BrickWall();
+                        this.putTile(b, i, j);
+                        bricks.push(b);
                     }
                 }
             }
         }
+
+        bricks[Math.floor(bricks.length * Math.random())].door = true;
     },
     /**
      * Put the tile on the map
@@ -93,6 +100,9 @@ extend(Game.maps.Map, Game.GameObject, {
      * @param atY
      */
     putTile: function (tile, atX, atY) {
+        if (this.grid[atX][atY] !== false) {
+            this.removeChild(this.grid[atX][atY]);
+        }
         this.grid[atX][atY] = tile;
         tile.x = atX * Game.tiles.SIZE;
         tile.y = atY * Game.tiles.SIZE;
@@ -136,6 +146,43 @@ extend(Game.maps.Map, Game.GameObject, {
         mob.x = atX * Game.tiles.SIZE;
         mob.y = atY * Game.tiles.SIZE;
         this.addChild(mob);
+        this.mobs.push(mob);
+
+        if (this.enemyCount() > 0) {
+            this.cleared = false;
+        }
+    },
+    /**
+     * Remove mob
+     * @param mob
+     */
+    removeMob: function (mob) {
+        var index = this.mobs.indexOf(mob);
+        if (index !== -1) {
+            this.mobs.splice(index, 1);
+            this.removeChild(mob);
+        }
+
+        if (this.enemyCount() == 0) {
+            this.cleared = true;
+            console.log('can exit');
+        }
+    },
+    /**
+     * Count of the enemies
+     *
+     * @returns {number}
+     */
+    enemyCount: function () {
+        var enemyCount = 0;
+
+        for (var i in this.mobs) {
+            if (this.mobs[i] instanceof Game.mobs.Enemy) {
+                enemyCount++;
+            }
+        }
+
+        return enemyCount;
     },
     /**
      * Select tiles from map inside the rectangle

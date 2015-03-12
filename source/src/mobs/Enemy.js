@@ -8,6 +8,7 @@ Game.mobs.Enemy = function () {
 
     this.bW = this.bH = 50;
     this.direction = new PIXI.math.Point(0, 0);
+    this.speed = 60;
 
     this.chooseDirection();
 
@@ -38,8 +39,8 @@ extend(Game.mobs.Enemy, Game.mobs.Mob, {
         this.chooseDirection();
     },
     update: function (delta) {
-        this.x += this.direction.x * (100 * delta);
-        this.y += this.direction.y * (100 * delta);
+        this.x += this.direction.x * (this.speed * delta);
+        this.y += this.direction.y * (this.speed * delta);
 
         Game.mobs.Mob.prototype.update.call(this, delta);
     }
