@@ -7,7 +7,7 @@ Game.tiles.BrickWall = function () {
     Game.tiles.Tile.call(this);
     this.passable = false;
 
-    this.addChild(this.genQuad(0xd4776a));
+    this.addChild(this.genQuad(0xd4776a, Game.tiles.SIZE, Game.tiles.SIZE));
     this.door = false;
 };
 

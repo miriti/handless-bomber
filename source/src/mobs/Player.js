@@ -6,9 +6,9 @@
 Game.mobs.Player = function () {
     Game.mobs.Mob.call(this);
 
-    this.bW = this.bH = 40;
+    this.collisionShape = new Game.CollisionCircle(20);
 
-    var g = this.genQuad(0x7788aa);
+    var g = this.genQuad(0x7788aa, 40, 40);
     this.addChild(g);
 
     this.bombKey = false;

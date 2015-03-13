@@ -1,6 +1,10 @@
 [
   "Init.js",
   "core/Input.js",
+  "core/Vector.js",
+  "core/CollisionShape.js",
+  "core/CollisionRect.js",
+  "core/CollisionCircle.js",
   "core/GameObject.js",
   "core/MapObject.js",
   "core/MapCollisionObject.js",

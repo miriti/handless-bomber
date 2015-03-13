@@ -5,7 +5,7 @@
 Game.tiles.Fire = function () {
     Game.tiles.Tile.call(this);
     this._time = 0.5;
-    this.addChild(this.genQuad(0xffb4aa));
+    this.addChild(this.genQuad(0xffb4aa, Game.tiles.SIZE, Game.tiles.SIZE));
 };
 
 extend(Game.tiles.Fire, Game.tiles.Tile, {

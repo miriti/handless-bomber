@@ -6,13 +6,14 @@
 Game.mobs.Enemy = function () {
     Game.mobs.Mob.call(this);
 
-    this.bW = this.bH = 50;
+    this.collisionShape = new Game.CollisionRect(25, 25);
+
     this.direction = new PIXI.math.Point(0, 0);
     this.speed = 60;
 
     this.chooseDirection();
 
-    var g = this.genQuad(0x802215);
+    var g = this.genQuad(0x802215, 50, 50);
     this.addChild(g);
 };
 

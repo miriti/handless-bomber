@@ -7,7 +7,7 @@
 Game.tiles.Door = function () {
     Game.tiles.Tile.call(this);
     this.passable = true;
-    this.addChild(this.genQuad(0x061639));
+    this.addChild(this.genQuad(0x061639, Game.tiles.SIZE, Game.tiles.SIZE));
 };
 
 extend(Game.tiles.Door, Game.tiles.Tile, {

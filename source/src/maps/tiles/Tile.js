@@ -9,7 +9,6 @@ Game.tiles.SIZE = 50;
  */
 Game.tiles.Tile = function () {
     Game.MapObject.call(this);
-    this.bW = this.bH = Game.tiles.SIZE;
     this.passable = true;
 };
 extend(Game.tiles.Tile, Game.MapObject, {

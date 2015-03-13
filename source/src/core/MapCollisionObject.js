@@ -1,5 +1,7 @@
 Game.MapCollisionObject = function () {
     Game.MapObject.call(this);
+
+    this.collisionShape = null;
 };
 
 extend(Game.MapCollisionObject, Game.MapObject, {
@@ -26,35 +28,90 @@ extend(Game.MapCollisionObject, Game.MapObject, {
         this._resolveCollision(offsetX, offsetY);
     },
     touchingTiles: function () {
-        return this.parent.selectTilesRect(this.x - this.bW / 2, this.y - this.bH / 2, this.bW, this.bH);
+        if (this.collisionShape != null) {
+            return this.parent.selectTilesRect(this.x - this.collisionShape.getWidth() / 2, this.y - this.collisionShape.getHeight() / 2, this.collisionShape.getWidth(), this.collisionShape.getHeight());
+        } else {
+            return [];
+        }
+    },
+    _resolveAAB: function (dx, dy, offsetX, offsetY, t) {
+        if (Math.abs(offsetX) > Math.abs(offsetY)) {
+            if (dy < 0) {
+                this.collision(0, -offsetY, t);
+            } else {
+                this.collision(0, offsetY, t);
+            }
+        } else {
+            if (dx < 0) {
+                this.collision(-offsetX, 0, t);
+            } else {
+                this.collision(offsetX, 0, t);
+            }
+        }
     },
     update: function (delta) {
         if ((this.parent) && (this.parent instanceof Game.maps.Map)) {
-            var touchingTiles = this.touchingTiles();
+            if (this.collisionShape != null) {
+                var touchingTiles = this.touchingTiles();
 
-            for (var i in touchingTiles) {
-                var t = touchingTiles[i];
-                if ((t !== false) && (!t.passable)) {
-                    var dx = this.x - t.x;
-                    var dy = this.y - t.y;
-                    var minDx = this.bW / 2 + Game.tiles.SIZE / 2;
-                    var minDy = this.bH / 2 + Game.tiles.SIZE / 2;
+                for (var i in touchingTiles) {
+                    var t = touchingTiles[i];
 
-                    if ((Math.abs(dx) < minDx) && (Math.abs(dy) < minDy)) {
-                        var offsetX = minDx - Math.abs(dx);
-                        var offsetY = minDy - Math.abs(dy);
+                    if ((t !== false) && (!t.passable)) {
+                        var dx = this.x - t.x;
+                        var dy = this.y - t.y;
 
-                        if (Math.abs(offsetX) > Math.abs(offsetY)) {
-                            if (dy < 0) {
-                                this.collision(0, -offsetY, t);
-                            } else {
-                                this.collision(0, offsetY, t);
+                        var ht = Game.tiles.SIZE / 2;
+
+                        var minDx = this.collisionShape.getWidth() / 2 + ht;
+                        var minDy = this.collisionShape.getHeight() / 2 + ht;
+
+                        if ((Math.abs(dx) < minDx) && (Math.abs(dy) < minDy)) {
+                            var offsetX = minDx - Math.abs(dx);
+                            var offsetY = minDy - Math.abs(dy);
+
+                            if (this.collisionShape instanceof Game.CollisionRect) {
+                                this._resolveAAB(dx, dy, offsetX, offsetY, t);
                             }
-                        } else {
-                            if (dx < 0) {
-                                this.collision(-offsetX, 0, t);
-                            } else {
-                                this.collision(offsetX, 0, t);
+
+                            if (this.collisionShape instanceof Game.CollisionCircle) {
+                                if (((this.x > t.x - ht) && (this.x < t.x + ht) && ((this.y < t.y - ht) || (this.y > t.y + ht)))
+                                    ||
+                                    ((this.y > t.y - ht) && (this.y < t.y + ht) && ((this.x < t.x - ht) || (this.x > t.x + ht)))) {
+                                    this._resolveAAB(dx, dy, offsetX, offsetY, t);
+                                } else {
+                                    var cX, cY;
+
+                                    if (this.x < t.x) {
+                                        if (this.y < t.y) {
+                                            cX = t.x - ht;
+                                            cY = t.y - ht;
+                                        } else {
+                                            cX = t.x - ht;
+                                            cY = t.y + ht;
+                                        }
+                                    } else {
+                                        if (this.y < t.y) {
+                                            cX = t.x + ht;
+                                            cY = t.y - ht;
+                                        } else {
+                                            cX = t.x + ht;
+                                            cY = t.y + ht;
+                                        }
+                                    }
+
+                                    var v = new Game.Vector(this.x - cX, this.y - cY);
+
+                                    if (v.len() < this.collisionShape.radius) {
+                                        v.setLen(this.collisionShape.radius);
+                                        this.x = cX;
+                                        this.y = cY;
+                                        if (isNaN(v.x) || isNaN(v.y)) {
+                                            console.log(v, this.x, this.y, cX, cY);
+                                        }
+                                        this.collision(v.x, v.y, t);
+                                    }
+                                }
                             }
                         }
                     }
