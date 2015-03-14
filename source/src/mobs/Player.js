@@ -19,19 +19,6 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
     die: function () {
 
     },
-    /**
-     * Players collisions
-     *
-     * @param offsetX
-     * @param offsetY
-     * @param tile
-     */
-    collision: function (offsetX, offsetY, tile) {
-        if ((this.lastBombTile !== null) && (tile == this.lastBombTile)) {
-            return;
-        }
-        this._resolveCollision(offsetX, offsetY);
-    },
     layBomb: function () {
         var t = this.parent.getTile(this.cell.x, this.cell.y);
 
@@ -47,6 +34,8 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
 
             this.lastBombTile.bomb = b;
             b.tile = this.lastBombTile;
+
+            this.collisionExcept.push(this.lastBombTile);
 
             this.parent.addChild(b);
         }
@@ -97,6 +86,10 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
 
             // Player is no longer touching the tile where he put a bomb
             if (!has) {
+                var lbI = this.collisionExcept.indexOf(this.lastBombTile);
+                if (lbI !== -1) {
+                    this.collisionExcept.splice(lbI, 1);
+                }
                 this.lastBombTile = null;
             }
         }

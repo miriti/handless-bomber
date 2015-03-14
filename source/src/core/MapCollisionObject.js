@@ -2,6 +2,7 @@ Game.MapCollisionObject = function () {
     Game.MapObject.call(this);
 
     this.collisionShape = null;
+    this.collisionExcept = [];
 };
 
 extend(Game.MapCollisionObject, Game.MapObject, {
@@ -57,7 +58,7 @@ extend(Game.MapCollisionObject, Game.MapObject, {
                 for (var i in touchingTiles) {
                     var t = touchingTiles[i];
 
-                    if ((t !== false) && (!t.passable)) {
+                    if ((t !== false) && (!t.passable) && (this.collisionExcept.indexOf(t) === -1)) {
                         var dx = this.x - t.x;
                         var dy = this.y - t.y;
 
@@ -106,9 +107,6 @@ extend(Game.MapCollisionObject, Game.MapObject, {
                                         v.setLen(this.collisionShape.radius);
                                         this.x = cX;
                                         this.y = cY;
-                                        if (isNaN(v.x) || isNaN(v.y)) {
-                                            console.log(v, this.x, this.y, cX, cY);
-                                        }
                                         this.collision(v.x, v.y, t);
                                     }
                                 }

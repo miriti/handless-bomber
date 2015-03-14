@@ -2,6 +2,7 @@ Game.timestamp = null;
 Game.lastTimestamp = null;
 Game.currentScene = null;
 Game._sceneStack = [];
+Game.timeScale = 1;
 
 /**
  * Set the current scene of the game
@@ -30,11 +31,11 @@ Game.animationFrame = function () {
     if (this.currentScene !== null) {
         if (delta > requestedDelta) {
             while (delta > requestedDelta) {
-                this.currentScene.update(requestedDelta);
+                this.currentScene.update(requestedDelta * Game.timeScale);
                 delta -= requestedDelta;
             }
         } else {
-            this.currentScene.update(delta);
+            this.currentScene.update(delta * Game.timeScale);
         }
     }
 
