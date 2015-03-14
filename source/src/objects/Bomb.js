@@ -15,6 +15,8 @@ Game.objects.Bomb = function () {
     this.time = 2;
     this.power = 3;
     this.tile = null;
+
+    this.sound = new buzz.sound('data/snd/explosion.wav');
 };
 
 extend(Game.objects.Bomb, Game.MapObject, {
@@ -50,6 +52,7 @@ extend(Game.objects.Bomb, Game.MapObject, {
         Game.MapObject.prototype.update.call(this, delta);
 
         if (this.time <= 0) {
+            this.sound.play();
             this.wave(this.cell.x, this.cell.y, -1, 0, this.power);
             this.wave(this.cell.x, this.cell.y, 1, 0, this.power);
             this.wave(this.cell.x, this.cell.y, 0, 1, this.power);

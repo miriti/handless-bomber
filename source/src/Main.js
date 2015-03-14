@@ -72,7 +72,16 @@ Game.run = function () {
 
     this.setCurrentScene(new Game.UI.MenuMain());
 
-    this.animationFrame();
+    var loader = new PIXI.Loader();
+    loader.add('explosion', 'data/snd/explosion.wav');
+
+    var self = this;
+
+    loader.once('complete', function () {
+        self.animationFrame();
+    });
+
+    loader.load();
 
     window.onresize = function () {
         Game.resize(window.innerWidth, window.innerHeight);

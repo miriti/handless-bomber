@@ -8,13 +8,14 @@ Game.tiles.BrickWall = function () {
     this.passable = false;
 
     this.addChild(this.genQuad(0xd4776a, Game.tiles.SIZE, Game.tiles.SIZE));
-    this.door = false;
+
+    this.contains = null;
 };
 
 extend(Game.tiles.BrickWall, Game.tiles.Tile, {
     explode: function () {
-        if (this.door !== false) {
-            this.parent.putTile(new Game.tiles.Door(), this.cell.x, this.cell.y);
+        if (this.contains !== null) {
+            this.parent.putTile(this.contains, this.cell.x, this.cell.y);
         } else {
             this.parent.removeTile(this.cell.x, this.cell.y);
         }

@@ -25,7 +25,11 @@ gulp.task('compile', ['lint'], function () {
 });
 
 gulp.task('concat', ['compile'], function () {
-    return gulp.src(['source/src/lib/pixi/bin/pixi.min.js', 'release/game.tmp.js'])
+    return gulp.src([
+        'source/src/lib/pixi/bin/pixi.min.js',
+        'source/src/lib/buzz/dist/buzz.min.js',
+        'release/game.tmp.js'
+    ])
         .pipe(concat('game.js'))
         .pipe(gulp.dest('release/'));
 });

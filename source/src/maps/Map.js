@@ -90,7 +90,8 @@ extend(Game.maps.Map, Game.GameObject, {
             }
         }
 
-        bricks[Math.floor(bricks.length * Math.random())].door = true;
+        var rndBrick = Math.floor(bricks.length * Math.random());
+        bricks[rndBrick].contains = new Game.tiles.Door();
     },
     /**
      * Put the tile on the map
@@ -165,7 +166,6 @@ extend(Game.maps.Map, Game.GameObject, {
 
         if (this.enemyCount() == 0) {
             this.cleared = true;
-            console.log('can exit');
         }
     },
     /**
