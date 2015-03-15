@@ -14,6 +14,6 @@ Game.tiles.Tile = function () {
 extend(Game.tiles.Tile, Game.MapObject, {
     touch: function(mob) {
     },
-    explode: function() {
+    explode: function(bomb) {
     }
 });

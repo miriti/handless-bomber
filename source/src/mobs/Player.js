@@ -13,6 +13,9 @@ Game.mobs.Player = function () {
 
     this.bombKey = false;
     this.lastBombTile = null;
+    this.power = 1;
+
+    this.bombSound = new buzz.sound('data/snd/bomb.wav');
 };
 
 extend(Game.mobs.Player, Game.mobs.Mob, {
@@ -27,10 +30,20 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
             this.parent.putTile(this.lastBombTile, this.cell.x, this.cell.y);
 
             var b = new Game.objects.Bomb();
+            b.power = this.power;
+            b.rotation = -Math.PI + Math.random() * (Math.PI * 2);
             b.cell.x = this.cell.x;
             b.cell.y = this.cell.y;
-            b.x = this.cell.x * Game.tiles.SIZE;
-            b.y = this.cell.y * Game.tiles.SIZE;
+
+            b.x = this.x;
+            b.y = this.y;
+
+            TweenLite.to(b, 1, {
+                x: this.cell.x * Game.tiles.SIZE,
+                y: this.cell.y * Game.tiles.SIZE,
+                rotation: 0,
+                ease: Expo.easeOut
+            });
 
             this.lastBombTile.bomb = b;
             b.tile = this.lastBombTile;
@@ -38,6 +51,7 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
             this.collisionExcept.push(this.lastBombTile);
 
             this.parent.addChild(b);
+            this.bombSound.play();
         }
     },
     /**

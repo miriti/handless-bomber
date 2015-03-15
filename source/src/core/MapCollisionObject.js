@@ -50,6 +50,22 @@ extend(Game.MapCollisionObject, Game.MapObject, {
             }
         }
     },
+    tileExcepted: function (tile) {
+        if (tile == false) return false;
+        if (this.collisionExcept.length > 0) {
+            if (this.collisionExcept.indexOf(tile) === -1) {
+                for (var i in this.collisionExcept) {
+                    if (tile.__proto__.constructor == this.collisionExcept[i]) {
+                        return true;
+                    }
+                }
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    },
     update: function (delta) {
         if ((this.parent) && (this.parent instanceof Game.maps.Map)) {
             if (this.collisionShape != null) {
@@ -58,7 +74,7 @@ extend(Game.MapCollisionObject, Game.MapObject, {
                 for (var i in touchingTiles) {
                     var t = touchingTiles[i];
 
-                    if ((t !== false) && (!t.passable) && (this.collisionExcept.indexOf(t) === -1)) {
+                    if ((t !== false) && (!t.passable) && (!this.tileExcepted(t))) {
                         var dx = this.x - t.x;
                         var dy = this.y - t.y;
 

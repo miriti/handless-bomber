@@ -15,8 +15,20 @@ Game.Vector.prototype = {
         } else {
             this.x = this.y = 0;
         }
+        return this;
+    },
+    axisAlign: function () {
+        if (this.x > 0) this.x = 1;
+        if (this.x < 0) this.x = -1;
+        if (this.y > 0) this.y = 1;
+        if (this.y < 0) this.y = -1;
+        return this;
     },
     toString: function () {
         return '[' + this.x + ', ' + this.y + ']';
+    },
+    set: function (x, y) {
+        this.x = x;
+        this.y = y;
     }
 };

@@ -5,15 +5,12 @@
  */
 Game.objects.Bomb = function () {
     Game.MapObject.call(this);
-    var g = new PIXI.Graphics();
-    g.beginFill(0x061639);
-    g.drawCircle(0, 0, (Game.tiles.SIZE / 2) * 0.8);
-    g.endFill();
-
-    this.addChild(g);
+    var sprite = new PIXI.Sprite(PIXI.Texture.fromImage('data/spt/bomb.png'));
+    sprite.anchor.set(0.5, 0.5);
+    this.addChild(sprite);
 
     this.time = 2;
-    this.power = 3;
+    this.power = 1;
     this.tile = null;
 
     this.sound = new buzz.sound('data/snd/explosion.wav');
@@ -34,7 +31,7 @@ extend(Game.objects.Bomb, Game.MapObject, {
         }
 
         if ((t !== this.tile) && (t !== false)) {
-            t.explode();
+            t.explode(this);
             return false;
         } else {
             this.parent.putTile(new Game.tiles.Fire(), atX, atY);

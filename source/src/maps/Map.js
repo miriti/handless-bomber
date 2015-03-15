@@ -90,8 +90,19 @@ extend(Game.maps.Map, Game.GameObject, {
             }
         }
 
-        var rndBrick = Math.floor(bricks.length * Math.random());
+        var rndBrick;
+
+        do {
+            rndBrick = Math.floor(bricks.length * Math.random());
+        } while (bricks[rndBrick].contains !== null);
+
         bricks[rndBrick].contains = new Game.tiles.Door();
+
+        do {
+            rndBrick = Math.floor(bricks.length * Math.random());
+        } while (bricks[rndBrick].contains !== null);
+
+        bricks[rndBrick].contains = new Game.tiles.IncPowerBonus();
     },
     /**
      * Put the tile on the map

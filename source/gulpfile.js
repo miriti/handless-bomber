@@ -28,6 +28,8 @@ gulp.task('concat', ['compile'], function () {
     return gulp.src([
         'source/src/lib/pixi/bin/pixi.min.js',
         'source/src/lib/buzz/dist/buzz.min.js',
+        'source/src/lib/greensock/src/minified/TweenLite.min.js',
+        'source/src/lib/greensock/src/minified/easing/EasePack.min.js',
         'release/game.tmp.js'
     ])
         .pipe(concat('game.js'))
