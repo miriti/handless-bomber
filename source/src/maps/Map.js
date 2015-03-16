@@ -38,6 +38,8 @@ Game.maps.Map = function () {
         }
     }
 
+    this.bricks = [];
+
     this.rndBrickWalls();
 
     for (var n = 0; n < 5; n++) {
@@ -76,33 +78,32 @@ extend(Game.maps.Map, Game.GameObject, {
             }
         }
     },
+    getRndEmptyBrick: function () {
+        var rndBrick;
+
+        do {
+            rndBrick = Math.floor(this.bricks.length * Math.random());
+        } while (this.bricks[rndBrick].contains !== null);
+
+        return this.bricks[rndBrick];
+    },
     rndBrickWalls: function () {
-        var bricks = [];
         for (var i = 0; i < this.grid.length; i++) {
             for (var j = 0; j < this.grid[i].length; j++) {
                 if (this.grid[i][j] === false) {
                     if (Math.random() > 0.7) {
                         var b = new Game.tiles.BrickWall();
                         this.putTile(b, i, j);
-                        bricks.push(b);
+                        this.bricks.push(b);
                     }
                 }
             }
         }
 
-        var rndBrick;
-
-        do {
-            rndBrick = Math.floor(bricks.length * Math.random());
-        } while (bricks[rndBrick].contains !== null);
-
-        bricks[rndBrick].contains = new Game.tiles.Door();
-
-        do {
-            rndBrick = Math.floor(bricks.length * Math.random());
-        } while (bricks[rndBrick].contains !== null);
-
-        bricks[rndBrick].contains = new Game.tiles.IncPowerBonus();
+        this.getRndEmptyBrick().contains = new Game.tiles.Door();
+        this.getRndEmptyBrick().contains = new Game.tiles.BonusIncPower();
+        this.getRndEmptyBrick().contains = new Game.tiles.BonusAddBomb();
+        this.getRndEmptyBrick().contains = new Game.tiles.BonusRadio();
     },
     /**
      * Put the tile on the map

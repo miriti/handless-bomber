@@ -77,6 +77,8 @@ Game.run = function () {
     loader.add('bricks', 'data/spt/bricks.png');
     loader.add('brick', 'data/spt/brick.png');
     loader.add('bonus_inc_power', 'data/spt/bonus_inc_power.png');
+    loader.add('bonus_add_bomb', 'data/spt/bonus_add_bomb.png');
+    loader.add('bonus_radio', 'data/spt/bonus_radio.png');
     loader.add('explosion', 'data/snd/explosion.wav');
     loader.add('bonus', 'data/snd/bonus.wav');
     loader.add('bomb_snd', 'data/snd/bomb.wav');

@@ -7,6 +7,7 @@ Game.tiles.BonusTile = function () {
     Game.tiles.Tile.call(this);
     this.taken = false;
     this.sound = new buzz.sound('data/snd/bonus.wav');
+    this.phase = 0;
 };
 
 extend(Game.tiles.BonusTile, Game.tiles.Tile, {
@@ -21,5 +22,10 @@ extend(Game.tiles.BonusTile, Game.tiles.Tile, {
                 this.taken = true;
             }
         }
+    },
+    update: function (delta) {
+        Game.tiles.Tile.prototype.update.call(this, delta);
+        this.alpha = 0.5 + Math.sin(this.phase) * 0.3;
+        this.phase += (Math.PI * 2) * delta;
     }
 });
