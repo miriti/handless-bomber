@@ -11,8 +11,16 @@ Game.tiles.BonusTile = function () {
 };
 
 extend(Game.tiles.BonusTile, Game.tiles.Tile, {
+    /**
+     *
+     * @param player {Game.mobs.Player}
+     */
     castEffect: function (player) {
     },
+    /**
+     *
+     * @param mob {Game.mobs.Mob}
+     */
     touch: function (mob) {
         if (!this.taken) {
             if (mob instanceof Game.mobs.Player) {

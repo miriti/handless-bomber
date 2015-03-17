@@ -9,7 +9,7 @@ Game.mobs.Enemy = function () {
     this.collisionShape = new Game.CollisionRect(25, 25);
 
     this.direction = new PIXI.math.Point(0, 0);
-    this.speed = 60;
+    this.speed = 80;
 
     this.chooseDirection();
 

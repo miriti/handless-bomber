@@ -11,6 +11,8 @@
   "core/Scene.js",
   "objects/Objects.js",
   "objects/Bomb.js",
+  "objects/TimeBomb.js",
+  "objects/RadioBomb.js",
   "objects/Brick.js",
   "maps/tiles/Tile.js",
   "maps/tiles/SolidWall.js",

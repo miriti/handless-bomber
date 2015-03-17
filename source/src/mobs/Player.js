@@ -11,47 +11,62 @@ Game.mobs.Player = function () {
     var g = this.genQuad(0x7788aa, 40, 40);
     this.addChild(g);
 
-    this.bombKey = false;
+    this._bombKey = false;
+    this._explodeKey = false;
     this.lastBombTile = null;
     this.power = 1;
 
     this.bombSound = new buzz.sound('data/snd/bomb.wav');
+    this.bombCapacity = 1;
+    this.bombs = [];
+    this.bombType = Game.objects.TimeBomb;
 };
 
 extend(Game.mobs.Player, Game.mobs.Mob, {
     die: function () {
 
     },
+    _checkBombCapacity: function () {
+        for (var i = this.bombs.length - 1; i >= 0; i--) {
+            if (this.bombs[i].goneOff) {
+                this.bombs.splice(i, 1);
+            }
+        }
+        return this.bombs.length < this.bombCapacity;
+    },
     layBomb: function () {
-        var t = this.parent.getTile(this.cell.x, this.cell.y);
+        if ((this.lastBombTile === null) && (this._checkBombCapacity())) {
+            var t = this.parent.getTile(this.cell.x, this.cell.y);
 
-        if (t === false) {
-            this.lastBombTile = new Game.tiles.BombTile();
-            this.parent.putTile(this.lastBombTile, this.cell.x, this.cell.y);
+            if (t === false) {
+                this.lastBombTile = new Game.tiles.BombTile();
+                this.parent.putTile(this.lastBombTile, this.cell.x, this.cell.y);
 
-            var b = new Game.objects.Bomb();
-            b.power = this.power;
-            b.rotation = -Math.PI + Math.random() * (Math.PI * 2);
-            b.cell.x = this.cell.x;
-            b.cell.y = this.cell.y;
+                var bomb = new this.bombType();
+                bomb.power = this.power;
+                bomb.rotation = -Math.PI + Math.random() * (Math.PI * 2);
+                bomb.cell.x = this.cell.x;
+                bomb.cell.y = this.cell.y;
 
-            b.x = this.x;
-            b.y = this.y;
+                bomb.x = this.x;
+                bomb.y = this.y;
 
-            TweenLite.to(b, 1, {
-                x: this.cell.x * Game.tiles.SIZE,
-                y: this.cell.y * Game.tiles.SIZE,
-                rotation: 0,
-                ease: Expo.easeOut
-            });
+                TweenLite.to(bomb, 1, {
+                    x: this.cell.x * Game.tiles.SIZE,
+                    y: this.cell.y * Game.tiles.SIZE,
+                    rotation: 0,
+                    ease: Expo.easeOut
+                });
 
-            this.lastBombTile.bomb = b;
-            b.tile = this.lastBombTile;
+                this.lastBombTile.bomb = bomb;
+                bomb.tile = this.lastBombTile;
 
-            this.collisionExcept.push(this.lastBombTile);
+                this.collisionExcept.push(this.lastBombTile);
 
-            this.parent.addChild(b);
-            this.bombSound.play();
+                this.parent.addChild(bomb);
+                this.bombSound.play();
+                this.bombs.push(bomb);
+            }
         }
     },
     /**
@@ -73,13 +88,27 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
         if (Game.Input.down())
             this.y += 200 * delta;
 
-        if ((Game.Input.key(Game.Input.Keys.SPACE)) && (!this.bombKey)) {
-            if (this.lastBombTile == null) {
-                this.bombKey = true;
+        if (Game.Input.key(Game.Input.Keys.Z)) {
+            if (!this._bombKey) {
+                this._bombKey = true;
                 this.layBomb();
             }
         } else {
-            this.bombKey = false;
+            this._bombKey = false;
+        }
+
+        if (Game.Input.key(Game.Input.Keys.X)) {
+            if (!this._explodeKey) {
+                this._explodeKey = true;
+                for (var i = 0; i < this.bombs.length; i++) {
+                    if ((!this.bombs[i].goneOff) && (this.bombs[i] instanceof Game.objects.RadioBomb)) {
+                        this.bombs[i].goOff();
+                        break;
+                    }
+                }
+            }
+        } else {
+            this._explodeKey = false;
         }
 
         Game.mobs.Mob.prototype.update.call(this, delta);

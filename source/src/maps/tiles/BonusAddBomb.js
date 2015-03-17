@@ -4,7 +4,11 @@ Game.tiles.BonusAddBomb = function () {
 };
 
 extend(Game.tiles.BonusAddBomb, Game.tiles.BonusTile, {
+    /**
+     *
+     * @param player {Game.mobs.Player}
+     */
     castEffect: function (player) {
-
+        player.bombCapacity += 1;
     }
 });

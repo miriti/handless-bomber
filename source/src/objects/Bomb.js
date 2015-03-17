@@ -5,13 +5,15 @@
  */
 Game.objects.Bomb = function () {
     Game.MapObject.call(this);
+
     var sprite = new PIXI.Sprite(PIXI.Texture.fromImage('data/spt/bomb.png'));
     sprite.anchor.set(0.5, 0.5);
     this.addChild(sprite);
 
-    this.time = 2;
     this.power = 1;
     this.tile = null;
+    this.goneOff = false;
+    this._goOffDelay = -1;
 
     this.sound = new buzz.sound('data/snd/explosion.wav');
 };
@@ -26,7 +28,7 @@ extend(Game.objects.Bomb, Game.MapObject, {
         }
 
         if ((t !== this.tile) && (t instanceof Game.tiles.BombTile)) {
-            t.bomb.time = 0.05;
+            t.bomb.goOff(0.05);
             return false;
         }
 
@@ -45,10 +47,10 @@ extend(Game.objects.Bomb, Game.MapObject, {
                 this.wave(atX + dirX, atY + dirY, dirX, dirY, power);
         }
     },
-    update: function (delta) {
-        Game.MapObject.prototype.update.call(this, delta);
+    goOff: function (delay) {
+        delay = delay || 0;
 
-        if (this.time <= 0) {
+        if (delay == 0) {
             this.sound.play();
             this.wave(this.cell.x, this.cell.y, -1, 0, this.power);
             this.wave(this.cell.x, this.cell.y, 1, 0, this.power);
@@ -57,9 +59,21 @@ extend(Game.objects.Bomb, Game.MapObject, {
 
             this.parent.removeChild(this);
 
-            Game.currentScene.shake(10, 0.5);
+            this.goneOff = true;
+
+            Game.currentScene.shake(10 + Math.random() * 4, 0.5);
         } else {
-            this.time -= delta;
+            this._goOffDelay = delay;
+        }
+    },
+    update: function (delta) {
+        Game.MapObject.prototype.update.call(this, delta);
+        if (this._goOffDelay != -1) {
+            if (this._goOffDelay <= 0) {
+                this.goOff(0);
+            } else {
+                this._goOffDelay -= delta;
+            }
         }
     }
 });
