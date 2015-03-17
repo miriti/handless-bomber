@@ -79,6 +79,7 @@ Game.run = function () {
     loader.add('bonus_inc_power', 'data/spt/bonus_inc_power.png');
     loader.add('bonus_add_bomb', 'data/spt/bonus_add_bomb.png');
     loader.add('bonus_radio', 'data/spt/bonus_radio.png');
+    loader.add('explosion_anim', 'data/spt/explosion.png');
     loader.add('explosion', 'data/snd/explosion.wav');
     loader.add('bonus', 'data/snd/bonus.wav');
     loader.add('bomb_snd', 'data/snd/bomb.wav');
