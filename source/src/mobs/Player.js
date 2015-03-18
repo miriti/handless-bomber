@@ -21,12 +21,20 @@ Game.mobs.Player = function () {
     this.bombs = [];
     this.bombType = Game.objects.TimeBomb;
 
+    this.lives = 3;
+
     this.hasControl = true;
 };
 
 extend(Game.mobs.Player, Game.mobs.Mob, {
     die: function () {
-
+        /** @todo Death animation **/
+        if (this.lives > 0) {
+            this.lives--;
+            Game.currentScene.restartMap();
+        } else {
+            Game.currentScene.gameOver();
+        }
     },
     _checkBombCapacity: function () {
         for (var i = this.bombs.length - 1; i >= 0; i--) {

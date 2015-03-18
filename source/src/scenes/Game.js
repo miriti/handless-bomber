@@ -19,6 +19,16 @@ Game.Scenes.Game = function () {
 };
 
 extend(Game.Scenes.Game, Game.Scene, {
+    gameOver: function () {
+        this.blinds.close(3, function () {
+            console.log('Game over');
+        });
+    },
+    restartMap: function () {
+        if (this.currentMap !== null) {
+            this.changeMap(new this.currentMap.constructor());
+        }
+    },
     changeMap: function (map) {
 
         this.player.hasControl = false;

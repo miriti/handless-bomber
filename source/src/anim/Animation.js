@@ -7,7 +7,7 @@ Game.anim = {};
  * @constructor
  */
 Game.anim.Animation = function (texture, frameWidth, frameHeight) {
-    PIXI.Container.call(this);
+    Game.GameObject.call(this);
 
     var textures = [];
 
@@ -27,4 +27,14 @@ Game.anim.Animation = function (texture, frameWidth, frameHeight) {
 
     this.addChild(this.movieClip);
 };
-extend(Game.anim.Animation, PIXI.Container);
+
+extend(Game.anim.Animation, Game.GameObject, {
+    update: function (delta) {
+        Game.GameObject.prototype.update.call(this, delta);
+        this.movieClip.update({
+            data: {
+                deltaTime: delta * 60
+            }
+        });
+    }
+});
