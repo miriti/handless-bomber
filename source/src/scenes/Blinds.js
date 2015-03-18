@@ -1,8 +1,8 @@
 Game.Scenes.Blinds = function () {
     Game.GameObject.call(this);
 
-    this.leftBlind = this.genQuad(0x0, Game.screenWidth / 2, Game.screenHeight);
-    this.rightBlind = this.genQuad(0x0, Game.screenWidth / 2, Game.screenHeight);
+    this.leftBlind = this.genQuad(0x270339, Game.screenWidth / 2, Game.screenHeight);
+    this.rightBlind = this.genQuad(0x270339, Game.screenWidth / 2, Game.screenHeight);
 
     this.addChild(this.leftBlind);
     this.addChild(this.rightBlind);

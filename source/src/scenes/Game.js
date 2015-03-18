@@ -20,8 +20,40 @@ Game.Scenes.Game = function () {
 
 extend(Game.Scenes.Game, Game.Scene, {
     gameOver: function () {
-        this.blinds.close(3, function () {
-            console.log('Game over');
+        var self = this;
+        this.currentMap.paused = true;
+        this.blinds.closeFunc = Bounce.easeOut;
+        this.blinds.close(2, function () {
+            var gameOverDie = new PIXI.Text('Game Over', {
+                font: 'normal 72px monospace',
+                fill: '#9974aa',
+                align: 'center'
+            });
+            gameOverDie.anchor.set(0.5, 0.5);
+            gameOverDie.rotation = -Math.PI * 10;
+            gameOverDie.scale.set(0, 0);
+
+            self.addChild(gameOverDie);
+
+            TweenLite.to(gameOverDie.scale, 1, {x: 0.9, y: 0.9});
+            TweenLite.to(gameOverDie, 1, {
+                rotation: 0,
+                onComplete: function () {
+                    TweenLite.to(gameOverDie.scale, 2, {
+                        x: 1,
+                        y: 1,
+                        onComplete: function () {
+                            TweenLite.to(gameOverDie, 0.2, {
+                                height: 1,
+                                width: Game.screenWidth,
+                                onComplete: function () {
+                                    Game.setCurrentScene(new Game.UI.MenuMain());
+                                }
+                            });
+                        }
+                    });
+                }
+            })
         });
     },
     restartMap: function () {
@@ -30,11 +62,10 @@ extend(Game.Scenes.Game, Game.Scene, {
         }
     },
     changeMap: function (map) {
+        var self = this;
 
-        this.player.hasControl = false;
         map.paused = true;
 
-        var self = this;
         if (this.currentMap !== null) {
             this.currentMap.paused = true;
             this.blinds.close(1, function () {
@@ -49,13 +80,35 @@ extend(Game.Scenes.Game, Game.Scene, {
             });
         }
 
-        this.currentMap = map;
-        this.currentMap.putPlayer(this.player);
-        this.gameContainer.addChild(this.currentMap);
+        var levelName = new PIXI.Text(map.name, {font: 'normal 48px monospace', fill: '#9974aa', align: 'center'});
+        levelName.anchor.set(0.5, 0.5);
+        this.addChild(levelName);
 
-        this.blinds.open(1, function () {
-            self.player.hasControl = true;
-            self.currentMap.paused = false;
+        levelName.scale.set(0, 0);
+        levelName.rotation = -Math.PI * 10;
+
+        TweenLite.to(levelName.scale, 1, {x: 0.9, y: 0.9});
+        TweenLite.to(levelName, 1, {
+            rotation: 0, onComplete: function () {
+                TweenLite.to(levelName.scale, 2, {
+                    x: 1, y: 1, onComplete: function () {
+                        TweenLite.to(levelName.scale, 1, {x: 0, y: 0});
+                        TweenLite.to(levelName, 1, {
+                            rotation: -Math.PI * 10,
+                            onComplete: function () {
+                                self.currentMap = map;
+                                self.currentMap.putPlayer(self.player);
+                                self.gameContainer.addChild(self.currentMap);
+
+                                self.blinds.open(1, function () {
+                                    self.player.hasControl = true;
+                                    self.currentMap.paused = false;
+                                });
+                            }
+                        });
+                    }
+                });
+            }
         });
     },
     /**

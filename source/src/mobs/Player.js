@@ -21,7 +21,7 @@ Game.mobs.Player = function () {
     this.bombs = [];
     this.bombType = Game.objects.TimeBomb;
 
-    this.lives = 3;
+    this.lives = 2;
 
     this.hasControl = true;
 };
@@ -31,6 +31,7 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
         /** @todo Death animation **/
         if (this.lives > 0) {
             this.lives--;
+            this.lastBombTile = null;
             Game.currentScene.restartMap();
         } else {
             Game.currentScene.gameOver();

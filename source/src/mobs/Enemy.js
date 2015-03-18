@@ -45,12 +45,14 @@ extend(Game.mobs.Enemy, Game.mobs.Mob, {
 
         Game.mobs.Mob.prototype.update.call(this, delta);
 
-        for (var i in this.parent.mobs) {
-            if ((this.parent.mobs[i] !== this) && (this.parent.mobs[i] instanceof Game.mobs.Player)) {
-                if ((Math.abs(this.x - this.parent.mobs[i].x) < this.collisionShape.getWidth() / 2 + this.parent.mobs[i].collisionShape.getWidth() / 2)
-                    &&
-                    (Math.abs(this.y - this.parent.mobs[i].y) < this.collisionShape.getHeight() / 2 + this.parent.mobs[i].collisionShape.getHeight() / 2)) {
-                    this.parent.mobs[i].die();
+        if (this.parent) {
+            for (var i in this.parent.mobs) {
+                if ((this.parent.mobs[i] !== this) && (this.parent.mobs[i] instanceof Game.mobs.Player)) {
+                    if ((Math.abs(this.x - this.parent.mobs[i].x) < this.collisionShape.getWidth() / 2 + this.parent.mobs[i].collisionShape.getWidth() / 2)
+                        &&
+                        (Math.abs(this.y - this.parent.mobs[i].y) < this.collisionShape.getHeight() / 2 + this.parent.mobs[i].collisionShape.getHeight() / 2)) {
+                        this.parent.mobs[i].die();
+                    }
                 }
             }
         }
