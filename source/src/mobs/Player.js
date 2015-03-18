@@ -8,8 +8,8 @@ Game.mobs.Player = function () {
 
     this.collisionShape = new Game.CollisionCircle(20);
 
-    var g = this.genQuad(0x7788aa, 40, 40);
-    this.addChild(g);
+    this.sprite = new Game.anim.Player();
+    this.addChild(this.sprite);
 
     this._bombKey = false;
     this._explodeKey = false;
@@ -88,17 +88,27 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
     update: function (delta) {
         if (this.hasControl) {
             // Controls
-            if (Game.Input.left())
+            if (Game.Input.left()) {
                 this.x -= 200 * delta;
+                this.sprite.scale.set(-1, 1);
+            }
 
-            if (Game.Input.right())
+            if (Game.Input.right()) {
                 this.x += 200 * delta;
+                this.sprite.scale.set(1, 1);
+            }
 
             if (Game.Input.up())
                 this.y -= 200 * delta;
 
             if (Game.Input.down())
                 this.y += 200 * delta;
+
+            if (Game.Input.left() || Game.Input.right() || Game.Input.up() || Game.Input.down()) {
+                this.sprite.changeState('running');
+            } else {
+                this.sprite.changeState('idle');
+            }
 
             if (Game.Input.key(Game.Input.Keys.Z)) {
                 if (!this._bombKey) {

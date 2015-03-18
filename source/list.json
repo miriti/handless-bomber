@@ -11,6 +11,7 @@
   "core/Scene.js",
   "anim/Animation.js",
   "anim/Explosion.js",
+  "anim/Player.js",
   "objects/Objects.js",
   "objects/Bomb.js",
   "objects/TimeBomb.js",
