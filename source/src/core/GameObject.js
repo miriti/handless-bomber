@@ -5,14 +5,17 @@
  */
 Game.GameObject = function () {
     PIXI.Container.call(this);
+    this.paused = false;
 };
 
 extend(Game.GameObject, PIXI.Container, {
     update: function (delta) {
-        for (var i = this.children.length - 1; i >= 0; i--) {
-            var c = this.children[i];
-            if (c instanceof Game.GameObject) {
-                c.update(delta);
+        if (!this.paused) {
+            for (var i = this.children.length - 1; i >= 0; i--) {
+                var c = this.children[i];
+                if (c instanceof Game.GameObject) {
+                    c.update(delta);
+                }
             }
         }
     },

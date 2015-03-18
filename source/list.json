@@ -9,6 +9,8 @@
   "core/MapObject.js",
   "core/MapCollisionObject.js",
   "core/Scene.js",
+  "anim/Animation.js",
+  "anim/Explosion.js",
   "objects/Objects.js",
   "objects/Bomb.js",
   "objects/TimeBomb.js",
@@ -31,6 +33,7 @@
   "ui/UI.js",
   "ui/Menu.js",
   "scenes/Scenes.js",
+  "scenes/Blinds.js",
   "scenes/Game.js",
   "Main.js"
 ]

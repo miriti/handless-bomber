@@ -20,6 +20,8 @@ Game.mobs.Player = function () {
     this.bombCapacity = 1;
     this.bombs = [];
     this.bombType = Game.objects.TimeBomb;
+
+    this.hasControl = true;
 };
 
 extend(Game.mobs.Player, Game.mobs.Mob, {
@@ -75,39 +77,44 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
      * @param delta
      */
     update: function (delta) {
-        // Controls
-        if (Game.Input.left())
-            this.x -= 200 * delta;
+        if (this.hasControl) {
+            // Controls
+            if (Game.Input.left())
+                this.x -= 200 * delta;
 
-        if (Game.Input.right())
-            this.x += 200 * delta;
+            if (Game.Input.right())
+                this.x += 200 * delta;
 
-        if (Game.Input.up())
-            this.y -= 200 * delta;
+            if (Game.Input.up())
+                this.y -= 200 * delta;
 
-        if (Game.Input.down())
-            this.y += 200 * delta;
+            if (Game.Input.down())
+                this.y += 200 * delta;
 
-        if (Game.Input.key(Game.Input.Keys.Z)) {
-            if (!this._bombKey) {
-                this._bombKey = true;
-                this.layBomb();
+            if (Game.Input.key(Game.Input.Keys.Z)) {
+                if (!this._bombKey) {
+                    this._bombKey = true;
+                    this.layBomb();
+                }
+            } else {
+                this._bombKey = false;
+            }
+
+            if (Game.Input.key(Game.Input.Keys.X)) {
+                if (!this._explodeKey) {
+                    this._explodeKey = true;
+                    for (var i = 0; i < this.bombs.length; i++) {
+                        if ((!this.bombs[i].goneOff) && (this.bombs[i] instanceof Game.objects.RadioBomb)) {
+                            this.bombs[i].goOff();
+                            break;
+                        }
+                    }
+                }
+            } else {
+                this._explodeKey = false;
             }
         } else {
             this._bombKey = false;
-        }
-
-        if (Game.Input.key(Game.Input.Keys.X)) {
-            if (!this._explodeKey) {
-                this._explodeKey = true;
-                for (var i = 0; i < this.bombs.length; i++) {
-                    if ((!this.bombs[i].goneOff) && (this.bombs[i] instanceof Game.objects.RadioBomb)) {
-                        this.bombs[i].goOff();
-                        break;
-                    }
-                }
-            }
-        } else {
             this._explodeKey = false;
         }
 

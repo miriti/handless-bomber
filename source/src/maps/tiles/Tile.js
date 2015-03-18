@@ -17,8 +17,28 @@ extend(Game.tiles.Tile, Game.MapObject, {
         sprite.anchor.set(0.5, 0.5);
         this.addChild(sprite);
     },
-    touch: function(mob) {
+    touch: function (mob) {
     },
-    explode: function(bomb) {
+    explode: function (bomb) {
+    },
+    explosion: function () {
+        if (this.parent !== null) {
+            var explosions = [];
+
+            for (var i = 0; i < 5; i++) {
+                var explosion = new Game.anim.Explosion();
+                explosion.rotation = Math.random() * (Math.PI * 2);
+                explosion.x = this.x + (-Game.tiles.SIZE / 2 + Math.random() * (Game.tiles.SIZE));
+                explosion.y = this.y + (-Game.tiles.SIZE / 2 + Math.random() * (Game.tiles.SIZE));
+                this.parent.addChild(explosion);
+                explosions.push(explosion);
+            }
+
+            explosions[0].movieClip.onComplete = function () {
+                for (var i = 0; i < explosions.length; i++) {
+                    explosions[i].parent.removeChild(explosions[i]);
+                }
+            };
+        }
     }
 });

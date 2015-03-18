@@ -25,6 +25,8 @@ extend(Game.tiles.BrickWall, Game.tiles.Tile, {
             }
         }
 
+        this.explosion();
+
         if (this.contains !== null) {
             this.parent.putTile(this.contains, this.cell.x, this.cell.y);
         } else {

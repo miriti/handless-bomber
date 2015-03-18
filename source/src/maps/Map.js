@@ -14,6 +14,8 @@ Game.maps.Map = function () {
     this.gridWidth = 21;
     this.gridHeight = 11;
 
+    this.name = 'Testing Stage';
+
     var floor = new PIXI.Graphics();
     floor.beginFill(0x784a8e);
     floor.drawRect(-Game.tiles.SIZE / 2, -Game.tiles.SIZE / 2, this.gridWidth * Game.tiles.SIZE, this.gridHeight * Game.tiles.SIZE);
@@ -151,7 +153,12 @@ extend(Game.maps.Map, Game.GameObject, {
         if (cleanup !== false) {
             for (var i = atX - 1; i <= atX + 1; i++) {
                 for (var j = atY - 1; j <= atY + 1; j++) {
+                    var t = this.getTile(i, j);
                     this.removeTile(i, j);
+
+                    if ((t != false) && (t instanceof Game.tiles.BrickWall) && (t.contains !== null)) {
+                        this.getRndEmptyBrick().contains = t.contains;
+                    }
                 }
             }
         }
@@ -164,6 +171,9 @@ extend(Game.maps.Map, Game.GameObject, {
         if (this.enemyCount() > 0) {
             this.cleared = false;
         }
+    },
+    putPlayer: function (player) {
+        this.putMob(player, 1, 1, true);
     },
     /**
      * Remove mob

@@ -3,6 +3,8 @@ Game.lastTimestamp = null;
 Game.currentScene = null;
 Game._sceneStack = [];
 Game.timeScale = 1;
+Game.screenWidth = window.innerWidth;
+Game.screenHeight = window.innerHeight;
 
 /**
  * Set the current scene of the game
@@ -50,9 +52,14 @@ Game.animationFrame = function () {
  * @param height
  */
 Game.resize = function (width, height) {
+    this.screenWidth = width;
+    this.screenHeight = height;
     this.renderer.resize(width, height);
     this.stage.x = width / 2;
     this.stage.y = height / 2;
+    if (this.currentScene !== null) {
+        this.currentScene.resize(width, height);
+    }
 };
 
 /**

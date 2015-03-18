@@ -11,10 +11,10 @@ Game.objects.TimeBomb = function (time) {
 
 extend(Game.objects.TimeBomb, Game.objects.Bomb, {
     update: function (delta) {
-        Game.MapObject.prototype.update.call(this, delta);
+        Game.objects.Bomb.prototype.update.call(this, delta);
 
         if (this.time <= 0) {
-            this.goOff();
+            this.goOff(0);
         } else {
             this.time -= delta;
         }

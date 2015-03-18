@@ -16,6 +16,8 @@ Game.Scene = function () {
 };
 
 extend(Game.Scene, Game.GameObject, {
+    resize: function (newWidth, newHeight) {
+    },
     shake: function (amp, time) {
         this._shaking = true;
         this._shakingInitTime = time;
