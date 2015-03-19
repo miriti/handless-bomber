@@ -12,6 +12,7 @@
   "anim/Animation.js",
   "anim/Explosion.js",
   "anim/Player.js",
+  "anim/Ghost.js",
   "objects/Objects.js",
   "objects/Bomb.js",
   "objects/TimeBomb.js",

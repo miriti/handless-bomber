@@ -1,6 +1,9 @@
 Game.mobs.WormPart = function () {
     Game.mobs.Mob.call(this);
 
+    this.phase = Math.random() * Math.PI;
+
+    this.behind = null;
     this.ahead = null;
 
     this.lastCell = null;
@@ -18,11 +21,9 @@ Game.mobs.WormPart = function () {
         return null;
     };
 
-    var g = new PIXI.Graphics();
-    g.beginFill(0xffb4aa);
-    g.drawCircle(0, 0, 25);
-    g.endFill();
-    this.addChild(g);
+    this.sprite = new PIXI.Sprite(PIXI.Texture.fromImage('data/spt/worm_part.png'));
+    this.sprite.anchor.set(0.5, 0.5);
+    this.addChild(this.sprite);
 };
 
 extend(Game.mobs.WormPart, Game.mobs.Mob, {
@@ -34,6 +35,11 @@ extend(Game.mobs.WormPart, Game.mobs.Mob, {
 
                 this.x = r.x + (tr.x - r.x) * (this._moveTime / this.moveTime);
                 this.y = r.y + (tr.y - r.y) * (this._moveTime / this.moveTime);
+
+                this.sprite.rotation = Math.atan2(tr.y - this.y, tr.x - this.x) + (Math.PI / 8) * (Math.sin(this.phase) * 0.5);
+
+                this.phase += (Math.PI * 15) * delta;
+
                 this._moveTime += delta;
             } else {
                 this.lastCell.set(this.sourceCell.x, this.sourceCell.y);
@@ -86,8 +92,10 @@ Game.mobs.Worm = function () {
         tail.push(new Game.mobs.WormPart());
         if (i == 0) {
             tail[i].ahead = this.head;
+            this.head.behind = tail[i];
         } else {
             tail[i].ahead = tail[i - 1];
+            tail[i - 1].behind = tail[i];
         }
     }
 

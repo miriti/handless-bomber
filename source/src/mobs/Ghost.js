@@ -12,8 +12,8 @@ Game.mobs.Ghost = function () {
 
     this.chooseDirection();
 
-    var g = this.genQuad(0x802215, 50, 50);
-    this.addChild(g);
+    var anim = new Game.anim.Ghost();
+    this.addChild(anim);
 };
 
 extend(Game.mobs.Ghost, Game.mobs.Enemy, {

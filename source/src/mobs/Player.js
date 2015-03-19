@@ -32,6 +32,7 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
         if (this.lives > 0) {
             this.lives--;
             this.lastBombTile = null;
+            this.bombs = [];
             Game.currentScene.restartMap();
         } else {
             Game.currentScene.gameOver();
