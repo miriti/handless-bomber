@@ -27,5 +27,7 @@ extend(Game.mobs.Mob, Game.MapCollisionObject, {
                 t.touch(this);
             }
         }
+    },
+    put: function (mp, cellX, cellY) {
     }
 });

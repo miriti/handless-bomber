@@ -7,53 +7,60 @@ Game.maps = {};
  */
 Game.maps.Map = function () {
     Game.GameObject.call(this);
-    this.grid = [];
-    this.mobs = [];
-    this.cleared = false;
 
-    this.gridWidth = 21;
-    this.gridHeight = 11;
-
-    this.name = 'Testing Stage';
-
-    var floor = new PIXI.Graphics();
-    floor.beginFill(0x784a8e);
-    floor.drawRect(-Game.tiles.SIZE / 2, -Game.tiles.SIZE / 2, this.gridWidth * Game.tiles.SIZE, this.gridHeight * Game.tiles.SIZE);
-    floor.endFill();
-    this.addChild(floor);
-
-    this.initGrid(this.gridWidth, this.gridHeight);
-
-    for (var h = 0; h < this.gridWidth; h++) {
-        this.putTile(new Game.tiles.SolidWall(), h, 0);
-        this.putTile(new Game.tiles.SolidWall(), h, this.gridHeight - 1);
-    }
-
-    for (var v = 0; v < 10; v++) {
-        this.putTile(new Game.tiles.SolidWall(), 0, v);
-        this.putTile(new Game.tiles.SolidWall(), this.gridWidth - 1, v);
-    }
-
-    for (var i = 0; i < this.gridWidth / 2; i++) {
-        for (var j = 0; j < this.gridHeight / 2; j++) {
-            this.putTile(new Game.tiles.SolidWall(), i * 2, j * 2);
-        }
-    }
-
+    /**
+     * Array of bricks
+     * @type {Array}
+     */
     this.bricks = [];
 
-    this.rndBrickWalls();
+    /**
+     * The grid
+     * @type {Array}
+     */
+    this.grid = [];
 
-    for (var n = 0; n < 5; n++) {
-        var enemy = new Game.mobs.Enemy();
+    /**
+     * The array of mobs
+     * @type {Array}
+     */
+    this.mobs = [];
 
-        do {
-            var cellX = Math.round(this.gridWidth * Math.random());
-            var cellY = Math.round(this.gridHeight * Math.random());
-        } while (this.getTile(cellX, cellY) !== false);
+    /**
+     * Player
+     * @type {null}
+     */
+    this.player = null;
 
-        this.putMob(enemy, cellX, cellY);
-    }
+    /**
+     * Level is cleared. Can exit
+     * @type {boolean}
+     */
+    this.cleared = false;
+
+    /**
+     * Grid width
+     * @type {number}
+     */
+    this.gridWidth = 0;
+
+    /**
+     * Grid height
+     * @type {number}
+     */
+    this.gridHeight = 0;
+
+    /**
+     * Next map
+     * @type {Game.maps.Map}
+     */
+    this.next = null;
+
+    /**
+     * The name of the map
+     * @type {string}
+     */
+    this.name = '';
 };
 
 extend(Game.maps.Map, Game.GameObject, {
@@ -63,13 +70,42 @@ extend(Game.maps.Map, Game.GameObject, {
      * @param w
      * @param h
      */
-    initGrid: function (w, h) {
+    initGrid: function (w, h, solids) {
+        this.gridWidth = w;
+        this.gridHeight = h;
+
+        var floor = new PIXI.Graphics();
+        floor.beginFill(0x784a8e);
+        floor.drawRect(-Game.tiles.SIZE / 2, -Game.tiles.SIZE / 2, w * Game.tiles.SIZE, h * Game.tiles.SIZE);
+        floor.endFill();
+        this.addChild(floor);
+
         this.grid = [];
 
         for (var i = 0; i < w; i++) {
             this.grid[i] = [];
             for (var j = 0; j < h; j++) {
                 this.grid[i][j] = false;
+            }
+        }
+
+        if (solids) {
+            // walls
+            for (var ho = 0; ho < w; ho++) {
+                this.putTile(new Game.tiles.SolidWall(), ho, 0);
+                this.putTile(new Game.tiles.SolidWall(), ho, this.gridHeight - 1);
+            }
+
+            for (var v = 0; v < h; v++) {
+                this.putTile(new Game.tiles.SolidWall(), 0, v);
+                this.putTile(new Game.tiles.SolidWall(), this.gridWidth - 1, v);
+            }
+
+            // solids
+            for (var i = 0; i < w / 2; i++) {
+                for (var j = 0; j < h / 2; j++) {
+                    this.putTile(new Game.tiles.SolidWall(), i * 2, j * 2);
+                }
             }
         }
     },
@@ -101,11 +137,6 @@ extend(Game.maps.Map, Game.GameObject, {
                 }
             }
         }
-
-        this.getRndEmptyBrick().contains = new Game.tiles.Door();
-        this.getRndEmptyBrick().contains = new Game.tiles.BonusIncPower();
-        this.getRndEmptyBrick().contains = new Game.tiles.BonusAddBomb();
-        this.getRndEmptyBrick().contains = new Game.tiles.BonusRadio();
     },
     /**
      * Put the tile on the map
@@ -167,6 +198,9 @@ extend(Game.maps.Map, Game.GameObject, {
         mob.y = atY * Game.tiles.SIZE;
         this.addChild(mob);
         this.mobs.push(mob);
+        mob.map = this;
+        mob.cell.set(atX, atY);
+        mob.put(this, atX, atY);
 
         if (this.enemyCount() > 0) {
             this.cleared = false;
@@ -174,6 +208,7 @@ extend(Game.maps.Map, Game.GameObject, {
     },
     putPlayer: function (player) {
         this.putMob(player, 1, 1, true);
+        this.player = player;
     },
     /**
      * Remove mob

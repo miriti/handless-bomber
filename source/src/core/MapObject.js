@@ -1,6 +1,8 @@
 Game.MapObject = function () {
     Game.GameObject.call(this);
+    this.map = null;
     this.cell = new PIXI.math.Point(0, 0);
+    this.previousCell = new PIXI.math.Point(0, 0);
 };
 
 extend(Game.MapObject, Game.GameObject, {
@@ -14,6 +16,7 @@ extend(Game.MapObject, Game.GameObject, {
         this.cell.set(Math.round(this.x / Game.tiles.SIZE), Math.round(this.y / Game.tiles.SIZE));
 
         if (!((this.cell.x == cx) && (this.cell.y == cy))) {
+            this.previousCell.set(cx, cy);
             this.cellChanged();
         }
     }

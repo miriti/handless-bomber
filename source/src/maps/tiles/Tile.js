@@ -2,6 +2,20 @@ Game.tiles = {};
 
 Game.tiles.SIZE = 50;
 
+Game.tiles.toPixels = function (cell) {
+    return {
+        x: cell.x * Game.tiles.SIZE,
+        y: cell.y * Game.tiles.SIZE
+    };
+};
+
+Game.tiles.toCell = function (point) {
+    return {
+        x: Math.round(point.x / Game.tiles.SIZE),
+        y: Math.round(point.y / Game.tiles.SIZE)
+    };
+};
+
 /**
  * Base Tile
  *

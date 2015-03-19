@@ -14,10 +14,12 @@ Game.tiles.Door = function () {
 extend(Game.tiles.Door, Game.tiles.Tile, {
     touch: function (mob) {
         if (!this.exited) {
-            if ((mob instanceof Game.mobs.Player) && (this.parent.cleared)) {
-                this.exited = true;
-                mob.hasControl = false;
-                Game.currentScene.changeMap(new Game.maps.Map());
+            if (Game.currentScene.currentMap.next) {
+                if ((mob instanceof Game.mobs.Player) && (this.parent.cleared)) {
+                    this.exited = true;
+                    mob.hasControl = false;
+                    Game.currentScene.changeMap(new Game.currentScene.currentMap.next());
+                }
             }
         }
     }

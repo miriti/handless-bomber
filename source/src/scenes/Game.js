@@ -15,7 +15,7 @@ Game.Scenes.Game = function () {
     this.blinds = new Game.Scenes.Blinds();
     this.addChild(this.blinds);
 
-    this.changeMap(new Game.maps.Map());
+    this.changeMap(new Game.maps.WormsLair());
 };
 
 extend(Game.Scenes.Game, Game.Scene, {
