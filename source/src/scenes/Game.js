@@ -15,10 +15,17 @@ Game.Scenes.Game = function () {
     this.blinds = new Game.Scenes.Blinds();
     this.addChild(this.blinds);
 
-    this.changeMap(new Game.maps.WormsLair());
+    this.changeMap(new Game.maps.StageOne());
 };
 
 extend(Game.Scenes.Game, Game.Scene, {
+    recreatePlayer: function() {
+        var newPlayer = new Game.mobs.Player();
+
+        copyProps(this.player, newPlayer, ['lives', 'power', 'bombCapacity']);
+
+        return newPlayer;
+    },
     gameOver: function () {
         var self = this;
         this.currentMap.paused = true;
@@ -97,6 +104,7 @@ extend(Game.Scenes.Game, Game.Scene, {
                             rotation: -Math.PI * 10,
                             onComplete: function () {
                                 self.currentMap = map;
+                                self.player = self.recreatePlayer();
                                 self.currentMap.putPlayer(self.player);
                                 self.gameContainer.addChild(self.currentMap);
 

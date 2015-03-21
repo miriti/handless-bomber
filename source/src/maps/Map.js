@@ -61,6 +61,12 @@ Game.maps.Map = function () {
      * @type {string}
      */
     this.name = '';
+
+    /**
+     * Clear sound
+     * @type {buzz.sound}
+     */
+    this.clearSound = new buzz.sound("data/snd/clear.wav");
 };
 
 extend(Game.maps.Map, Game.GameObject, {
@@ -222,7 +228,10 @@ extend(Game.maps.Map, Game.GameObject, {
         }
 
         if (this.enemyCount() == 0) {
-            this.cleared = true;
+            if (!this.cleared) {
+                this.clearSound.play();
+                this.cleared = true;
+            }
         }
     },
     /**

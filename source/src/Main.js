@@ -80,20 +80,22 @@ Game.run = function () {
     this.setCurrentScene(new Game.UI.MenuMain());
 
     var loader = new PIXI.Loader();
-    loader.add('bomb', 'data/spt/bomb.png');
-    loader.add('bricks', 'data/spt/bricks.png');
-    loader.add('brick', 'data/spt/brick.png');
-    loader.add('bonus_inc_power', 'data/spt/bonus_inc_power.png');
-    loader.add('bonus_add_bomb', 'data/spt/bonus_add_bomb.png');
-    loader.add('bonus_radio', 'data/spt/bonus_radio.png');
-    loader.add('explosion_anim', 'data/spt/explosion.png');
-    loader.add('ghost_anim', 'data/spt/ghost.png');
-    loader.add('player_body', 'data/spt/player-body.png');
-    loader.add('player_leg', 'data/spt/player-leg.png');
-    loader.add('worm_part', 'data/spt/worm_part.png');
-    loader.add('explosion', 'data/snd/explosion.wav');
-    loader.add('bonus', 'data/snd/bonus.wav');
-    loader.add('bomb_snd', 'data/snd/bomb.wav');
+    loader.add('bomb', 'data/spt/bomb.png')
+        .add('bricks', 'data/spt/bricks.png')
+        .add('brick', 'data/spt/brick.png')
+        .add('bonus_inc_power', 'data/spt/bonus_inc_power.png')
+        .add('bonus_add_bomb', 'data/spt/bonus_add_bomb.png')
+        .add('bonus_radio', 'data/spt/bonus_radio.png')
+        .add('blood', 'data/spt/blood.png')
+        .add('explosion_anim', 'data/spt/explosion.png')
+        .add('ghost_anim', 'data/spt/ghost.png')
+        .add('player_body', 'data/spt/player-body.png')
+        .add('player_leg', 'data/spt/player-leg.png')
+        .add('worm_part', 'data/spt/worm_part.png')
+        .add('explosion', 'data/snd/explosion.wav')
+        .add('bonus', 'data/snd/bonus.wav')
+        .add('clear', 'data/snd/clear.wav')
+        .add('bomb_snd', 'data/snd/bomb.wav');
 
     var self = this;
 

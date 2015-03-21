@@ -18,6 +18,7 @@
   "objects/TimeBomb.js",
   "objects/RadioBomb.js",
   "objects/Brick.js",
+  "objects/Blood.js",
   "maps/tiles/Tile.js",
   "maps/tiles/SolidWall.js",
   "maps/tiles/BrickWall.js",

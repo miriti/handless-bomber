@@ -30,5 +30,11 @@ Game.Vector.prototype = {
     set: function (x, y) {
         this.x = x;
         this.y = y;
+        return this;
+    },
+    mult: function (a) {
+        this.x *= a;
+        this.y *= a;
+        return this;
     }
 };

@@ -4,13 +4,13 @@
  */
 Game.tiles.Fire = function () {
     Game.tiles.Tile.call(this);
-    this._time = 0.5;
+    this._time = 0.1;
     this._exploded = false;
 };
 
 extend(Game.tiles.Fire, Game.tiles.Tile, {
     touch: function (mob) {
-        mob.die();
+        mob.die(Game.tiles.toPixels(this.cell));
     },
     update: function (delta) {
         if (!this._exploded) {

@@ -104,15 +104,30 @@ Game.Input = {
         window.addEventListener("keydown", this._keyDown.bind(this));
         window.addEventListener("keyup", this._keyUp.bind(this));
     },
+    _callbacks: [],
     _pressed: new Array(256),
     _keyDown: function (e) {
         if ((this._pressed[e.keyCode] === null) || (typeof this._pressed[e.keyCode] === 'undefined')) {
             this._pressed[e.keyCode] = Game.timestamp;
         }
+
+        for (var i = this._callbacks.length - 1; i >= 0; i--) {
+            this._callbacks[i].call(this, e);
+            this._callbacks.splice(i, 1);
+        }
         // TODO Uncomment on release: e.preventDefault();
     },
     _keyUp: function (e) {
         this._pressed[e.keyCode] = null;
+    },
+    getKeyName: function (key) {
+        for (var name in this.Keys) {
+            if (this.Keys[name] == key) {
+                return name.replace('_', ' ');
+            }
+        }
+
+        return 'KEY ' + key;
     },
     key: function (key) {
         return this._pressed[key];
@@ -128,6 +143,9 @@ Game.Input = {
     },
     right: function () {
         return this._pressed[this.Keys.D] || this._pressed[this.Keys.RIGHT_ARROW];
+    },
+    addCallback: function (callback) {
+        this._callbacks.push(callback);
     }
 };
 

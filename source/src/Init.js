@@ -15,4 +15,10 @@ var extend = function (a, b, prototype) {
     }
 };
 
+var copyProps = function (from, to, props) {
+    for (var i in props) {
+        to[props[i]] = from[props[i]];
+    }
+}
+
 var Game = {};

@@ -22,17 +22,12 @@ Game.mobs.Player = function () {
     this.bombType = Game.objects.TimeBomb;
 
     this.lives = 2;
-
-    this.hasControl = true;
 };
 
 extend(Game.mobs.Player, Game.mobs.Mob, {
-    die: function () {
-        /** @todo Death animation **/
+    death: function () {
         if (this.lives > 0) {
             this.lives--;
-            this.lastBombTile = null;
-            this.bombs = [];
             Game.currentScene.restartMap();
         } else {
             Game.currentScene.gameOver();
@@ -87,54 +82,49 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
      * @param delta
      */
     update: function (delta) {
-        if (this.hasControl) {
-            // Controls
-            if (Game.Input.left()) {
-                this.x -= 200 * delta;
-                this.sprite.scale.set(-1, 1);
-            }
+        // Controls
+        if (Game.Input.left()) {
+            this.x -= 200 * delta;
+            this.sprite.scale.set(-1, 1);
+        }
 
-            if (Game.Input.right()) {
-                this.x += 200 * delta;
-                this.sprite.scale.set(1, 1);
-            }
+        if (Game.Input.right()) {
+            this.x += 200 * delta;
+            this.sprite.scale.set(1, 1);
+        }
 
-            if (Game.Input.up())
-                this.y -= 200 * delta;
+        if (Game.Input.up())
+            this.y -= 200 * delta;
 
-            if (Game.Input.down())
-                this.y += 200 * delta;
+        if (Game.Input.down())
+            this.y += 200 * delta;
 
-            if (Game.Input.left() || Game.Input.right() || Game.Input.up() || Game.Input.down()) {
-                this.sprite.changeState('running');
-            } else {
-                this.sprite.changeState('idle');
-            }
+        if (Game.Input.left() || Game.Input.right() || Game.Input.up() || Game.Input.down()) {
+            this.sprite.changeState('running');
+        } else {
+            this.sprite.changeState('idle');
+        }
 
-            if (Game.Input.key(Game.Input.Keys.Z)) {
-                if (!this._bombKey) {
-                    this._bombKey = true;
-                    this.layBomb();
-                }
-            } else {
-                this._bombKey = false;
-            }
-
-            if (Game.Input.key(Game.Input.Keys.X)) {
-                if (!this._explodeKey) {
-                    this._explodeKey = true;
-                    for (var i = 0; i < this.bombs.length; i++) {
-                        if ((!this.bombs[i].goneOff) && (this.bombs[i] instanceof Game.objects.RadioBomb)) {
-                            this.bombs[i].goOff();
-                            break;
-                        }
-                    }
-                }
-            } else {
-                this._explodeKey = false;
+        if (Game.Input.key(Game.Input.Keys.Z)) {
+            if (!this._bombKey) {
+                this._bombKey = true;
+                this.layBomb();
             }
         } else {
             this._bombKey = false;
+        }
+
+        if (Game.Input.key(Game.Input.Keys.X)) {
+            if (!this._explodeKey) {
+                this._explodeKey = true;
+                for (var i = 0; i < this.bombs.length; i++) {
+                    if ((!this.bombs[i].goneOff) && (this.bombs[i] instanceof Game.objects.RadioBomb)) {
+                        this.bombs[i].goOff();
+                        break;
+                    }
+                }
+            }
+        } else {
             this._explodeKey = false;
         }
 
