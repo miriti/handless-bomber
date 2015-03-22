@@ -77,10 +77,12 @@ Game.run = function () {
 
     PIXI.CONST.SCALE_MODES.DEFAULT = PIXI.CONST.SCALE_MODES.NEAREST;
 
-    this.setCurrentScene(new Game.UI.MenuMain());
+    this.setCurrentScene(new Game.UI.Intro());
 
     var loader = new PIXI.Loader();
-    loader.add('bomb', 'data/spt/bomb.png')
+    loader
+        .add('igdc_logo', 'data/spt/igdc_logo.png')
+        .add('bomb', 'data/spt/bomb.png')
         .add('bricks', 'data/spt/bricks.png')
         .add('brick', 'data/spt/brick.png')
         .add('bonus_inc_power', 'data/spt/bonus_inc_power.png')
@@ -89,17 +91,22 @@ Game.run = function () {
         .add('blood', 'data/spt/blood.png')
         .add('explosion_anim', 'data/spt/explosion.png')
         .add('ghost_anim', 'data/spt/ghost.png')
+        .add('firestar_back', 'data/spt/firestar-back.png')
+        .add('firestar_face', 'data/spt/firestar-face.png')
+        .add('fire', 'data/spt/fire.png')
         .add('player_body', 'data/spt/player-body.png')
         .add('player_leg', 'data/spt/player-leg.png')
         .add('worm_part', 'data/spt/worm_part.png')
         .add('explosion', 'data/snd/explosion.wav')
         .add('bonus', 'data/snd/bonus.wav')
         .add('clear', 'data/snd/clear.wav')
-        .add('bomb_snd', 'data/snd/bomb.wav');
+        .add('bomb_snd', 'data/snd/bomb.wav')
+        .add('theme', 'data/snd/theme.mp3');
 
     var self = this;
 
     loader.once('complete', function () {
+        var mainTheme = new buzz.sound('data/snd/theme.mp3').play().loop();
         self.animationFrame();
     });
 

@@ -9,7 +9,7 @@ Game.UI.MenuItem = function (caption, callback) {
 
     this.buttonMode = true;
     this.text = new PIXI.Text(caption, {font: 'normal 48px monospace', fill: '#7788aa'});
-    this.text.x = -this.text.width / 2;
+    this.text.anchor.set(0.5, 0.5);
     this.addChild(this.text);
 
     this.interactive = true;
@@ -31,7 +31,7 @@ Game.UI.MenuItem = function (caption, callback) {
 extend(Game.UI.MenuItem, PIXI.Container, {
     focus: function (is) {
         if (is) {
-            this.text.style = {font: 'normal 48px monospace', fill: '#ffb4aa'};
+            this.text.style = {font: 'bold 48px monospace', fill: '#ffb4aa'};
         } else {
             this.text.style = {font: 'normal 48px monospace', fill: '#7788aa'};
         }
@@ -80,23 +80,33 @@ Game.UI.MenuMain = function () {
             }
         },
         {
-            caption: "Button A: Z",
+            caption: "Button A: " + Game.Input.getKeyName(Game.Input.BUTTON_A),
             exec: function () {
                 var self = this;
-                self.text.text = 'PRESS A KEY';
-                thisMenu.getKey(function (code) {
-                    self.text.text = 'Button A: ' + Game.Input.getKeyName(code);
-                });
+                if (!self.waitKey) {
+                    self.waitKey = true;
+                    self.text.text = 'PRESS A KEY';
+                    thisMenu.getKey(function (code) {
+                        Game.Input.BUTTON_A = code;
+                        self.text.text = 'Button A: ' + Game.Input.getKeyName(code);
+                        self.waitKey = false;
+                    });
+                }
             }
         },
         {
-            caption: "Button B: X",
+            caption: "Button B: " + Game.Input.getKeyName(Game.Input.BUTTON_B),
             exec: function () {
                 var self = this;
-                self.text.text = 'PRESS A KEY';
-                thisMenu.getKey(function (code) {
-                    self.text.text = 'Button B: ' + Game.Input.getKeyName(code);
-                });
+                if (!self.waitKey) {
+                    self.waitKey = true;
+                    self.text.text = 'PRESS A KEY';
+                    thisMenu.getKey(function (code) {
+                        Game.Input.BUTTON_B = code;
+                        self.text.text = 'Button B: ' + Game.Input.getKeyName(code);
+                        self.waitKey = false;
+                    });
+                }
             }
         }
     ]);

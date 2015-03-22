@@ -30,10 +30,12 @@ extend(Game.MapCollisionObject, Game.MapObject, {
     },
     touchingTiles: function () {
         if (this.collisionShape != null) {
-            return this.parent.selectTilesRect(this.x - this.collisionShape.getWidth() / 2, this.y - this.collisionShape.getHeight() / 2, this.collisionShape.getWidth(), this.collisionShape.getHeight());
-        } else {
-            return [];
+            if (this.parent) {
+                return this.parent.selectTilesRect(this.x - this.collisionShape.getWidth() / 2, this.y - this.collisionShape.getHeight() / 2, this.collisionShape.getWidth(), this.collisionShape.getHeight());
+            }
         }
+
+        return [];
     },
     _resolveAAB: function (dx, dy, offsetX, offsetY, t) {
         if (Math.abs(offsetX) > Math.abs(offsetY)) {

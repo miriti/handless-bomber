@@ -100,6 +100,8 @@ Game.Input = {
         CLOSE_BRAKET: 221,
         SINGLE_QUOTE: 222
     },
+    BUTTON_A: 90,
+    BUTTON_B: 88,
     init: function () {
         window.addEventListener("keydown", this._keyDown.bind(this));
         window.addEventListener("keyup", this._keyUp.bind(this));
@@ -146,6 +148,13 @@ Game.Input = {
     },
     addCallback: function (callback) {
         this._callbacks.push(callback);
+    },
+    removeCallback: function (callback) {
+        var index;
+
+        if ((index = this._callbacks.indexOf(callback)) !== -1) {
+            this._callbacks.splice(index, 1);
+        }
     }
 };
 

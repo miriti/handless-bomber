@@ -1,32 +1,20 @@
 Game.maps.StageOne = function () {
     Game.maps.Map.call(this);
 
-    this.name = 'Stage 1';
+    this.name = 'Stage One';
 
-    this.next = Game.maps.WormsLair;
+    this.next = Game.maps.StageTwo;
 
     this.initGrid(15, 15, true);
 
     this.rndBrickWalls();
 
-    for (var n = 0; n < 5; n++) {
-        var enemy = new Game.mobs.Ghost();
-
-        do {
-            var cellX = Math.round(this.gridWidth * Math.random());
-            var cellY = Math.round(this.gridHeight * Math.random());
-        } while (this.getTile(cellX, cellY) !== false);
-
-        this.putMob(enemy, cellX, cellY, false);
+    for (var n = 0; n < 1; n++) {
+        this.putMobRnd(new Game.mobs.FireStar(), false);
     }
 
     this.getRndEmptyBrick().contains = new Game.tiles.Door();
-
-    // possible bonuses
-    var bonuses = [Game.tiles.BonusIncPower, Game.tiles.BonusAddBomb, Game.tiles.BonusRadio];
-
-    // hide random bonus on the level
-    this.getRndEmptyBrick().contains = new bonuses[Math.floor(Math.random() * bonuses.length)]();
+    this.getRndEmptyBrick().contains = new Game.tiles.BonusIncPower();
 };
 
 extend(Game.maps.StageOne, Game.maps.Map);

@@ -105,7 +105,7 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
             this.sprite.changeState('idle');
         }
 
-        if (Game.Input.key(Game.Input.Keys.Z)) {
+        if (Game.Input.key(Game.Input.BUTTON_A)) {
             if (!this._bombKey) {
                 this._bombKey = true;
                 this.layBomb();
@@ -114,7 +114,7 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
             this._bombKey = false;
         }
 
-        if (Game.Input.key(Game.Input.Keys.X)) {
+        if (Game.Input.key(Game.Input.BUTTON_B)) {
             if (!this._explodeKey) {
                 this._explodeKey = true;
                 for (var i = 0; i < this.bombs.length; i++) {

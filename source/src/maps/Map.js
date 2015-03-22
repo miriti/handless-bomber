@@ -127,7 +127,7 @@ extend(Game.maps.Map, Game.GameObject, {
 
         do {
             rndBrick = Math.floor(this.bricks.length * Math.random());
-        } while (this.bricks[rndBrick].contains !== null);
+        } while ((this.bricks[rndBrick].contains !== null) || (typeof this.bricks[rndBrick] === 'undefined') || (this.bricks[rndBrick] instanceof Game.tiles.SolidWall));
 
         return this.bricks[rndBrick];
     },
@@ -211,6 +211,16 @@ extend(Game.maps.Map, Game.GameObject, {
         if (this.enemyCount() > 0) {
             this.cleared = false;
         }
+    },
+    putMobRnd: function (mob, cleanup) {
+        var cellX, cellY;
+
+        do {
+            cellX = Math.round(this.gridWidth * Math.random());
+            cellY = Math.round(this.gridHeight * Math.random());
+        } while (this.getTile(cellX, cellY) !== false);
+
+        this.putMob(mob, cellX, cellY, cleanup);
     },
     putPlayer: function (player) {
         this.putMob(player, 1, 1, true);
