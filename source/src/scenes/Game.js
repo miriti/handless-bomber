@@ -58,12 +58,14 @@ extend(Game.Scenes.Game, Game.Scene, {
         infoText_shadow.position.set(2, 2);
         textContainer.addChild(infoText_shadow);
 
-        var infoText = new PIXI.Text(text, {font: 'normal 48px monospace', fill: '#d4776a'});
+        var infoText = new PIXI.Text(text, {font: 'normal 48px monospace', fill: '#aa4639'});
         infoText.anchor.set(0.5, 0.5);
         textContainer.addChild(infoText);
 
         textContainer.scale.set(100, 100);
         textContainer.alpha = 0;
+
+        textContainer.y = Game.screenHeight / 4;
 
         this.addChild(textContainer);
 
@@ -135,7 +137,7 @@ extend(Game.Scenes.Game, Game.Scene, {
     },
     restartMap: function () {
         if (this.currentMap !== null) {
-            this.changeMap(new this.currentMap.constructor(false));
+            this.changeMap(new this.currentMap.constructor(true));
         }
     },
     changeMap: function (map) {
@@ -147,7 +149,7 @@ extend(Game.Scenes.Game, Game.Scene, {
             this.currentMap.paused = true;
             this.blinds.close(1, function () {
                 self.currentMap.removeChild(self.player);
-                self.removeChild(self.currentMap);
+                self.currentMap.parent.removeChild(self.currentMap);
                 self.currentMap = null;
                 self.changeMap(map);
             });

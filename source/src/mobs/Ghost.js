@@ -13,8 +13,7 @@ Game.mobs.Ghost = function () {
     this.sourceCell = new PIXI.math.Point();
     this.targetCell = new PIXI.math.Point();
     this.cellCount = 0;
-    this.moveTime = 0.5;
-    this._moveTime = 0.5;
+    this.moveTime = this._moveTime = 1;
 
     this.collisionExcept = [Game.tiles.BrickWall, Game.tiles.BombTile];
 

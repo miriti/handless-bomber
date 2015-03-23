@@ -33,6 +33,7 @@
   "maps/StageOne.js",
   "maps/StageTwo.js",
   "maps/StageThree.js",
+  "maps/Overbricked.js",
   "maps/WormsLair.js",
   "mobs/Mob.js",
   "mobs/Player.js",

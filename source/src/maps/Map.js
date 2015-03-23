@@ -131,11 +131,15 @@ extend(Game.maps.Map, Game.GameObject, {
 
         return this.bricks[rndBrick];
     },
-    rndBrickWalls: function () {
+    rndBrickWalls: function (putFunc) {
+        putFunc = putFunc || function () {
+            return Math.random() > 0.7;
+        };
+
         for (var i = 0; i < this.grid.length; i++) {
             for (var j = 0; j < this.grid[i].length; j++) {
                 if (this.grid[i][j] === false) {
-                    if (Math.random() > 0.7) {
+                    if (putFunc()) {
                         var b = new Game.tiles.BrickWall();
                         this.putTile(b, i, j);
                         this.bricks.push(b);
@@ -216,9 +220,9 @@ extend(Game.maps.Map, Game.GameObject, {
         var cellX, cellY;
 
         do {
-            cellX = Math.round(this.gridWidth * Math.random());
-            cellY = Math.round(this.gridHeight * Math.random());
-        } while (this.getTile(cellX, cellY) !== false);
+            cellX = 5 + Math.round((this.gridWidth - 5) * Math.random());
+            cellY = 5 + Math.round((this.gridHeight - 5) * Math.random());
+        } while ((!cleanup) && (this.getTile(cellX, cellY) !== false));
 
         this.putMob(mob, cellX, cellY, cleanup);
     },

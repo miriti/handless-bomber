@@ -42,6 +42,7 @@ extend(Game.mobs.WormPart, Game.mobs.Enemy, {
                 this.behind.head = true;
             }
             this.behind.ahead = this.ahead;
+            this.behind.position.set(this.x, this.y);
         }
 
         Game.mobs.Enemy.prototype.die.call(this, source);
@@ -89,7 +90,7 @@ extend(Game.mobs.WormPart, Game.mobs.Enemy, {
  *
  * @constructor
  */
-Game.mobs.Worm = function () {
+Game.mobs.Worm = function (length) {
     Game.mobs.Mob.call(this);
 
     var tail = [];
@@ -110,12 +111,12 @@ Game.mobs.Worm = function () {
                 ny = Math.random() > 0.5 ? -1 : 1;
             }
             var tile = this.map.getTile(this.sourceCell.x + nx, this.sourceCell.y + ny);
-        } while (!((tile == false) || (tile instanceof Game.tiles.BombTile) || (tile instanceof Game.tiles.Fire)) || ((this.sourceCell.x + nx == this.lastCell.x) && (this.sourceCell.y + ny == this.lastCell.y)));
+        } while (!((tile == false) || (tile instanceof Game.tiles.BombTile) || (tile instanceof Game.tiles.Door) || (tile instanceof Game.tiles.Fire)) || ((this.sourceCell.x + nx == this.lastCell.x) && (this.sourceCell.y + ny == this.lastCell.y)));
 
         return new PIXI.math.Point(this.sourceCell.x + nx, this.sourceCell.y + ny);
     };
 
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < length; i++) {
         tail.push(new Game.mobs.WormPart());
         if (i == 0) {
             tail[i].ahead = this.head;

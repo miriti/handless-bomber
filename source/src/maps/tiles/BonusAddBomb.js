@@ -10,6 +10,6 @@ extend(Game.tiles.BonusAddBomb, Game.tiles.BonusTile, {
      */
     castEffect: function (player) {
         player.bombCapacity += 1;
-        Game.currentScene.infoDie('Bomb capacity: +1');
+        Game.currentScene.infoDie('Bomb capacity: ' + player.bombCapacity);
     }
 });

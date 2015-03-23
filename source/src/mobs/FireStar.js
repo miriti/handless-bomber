@@ -111,7 +111,12 @@ extend(Game.mobs.FireStar, Game.mobs.Enemy, {
      * @returns {boolean}
      */
     playerInSight: function () {
-        return ((this.parent.player.cell.x == this.cell.x) || (this.parent.player.cell.y == this.cell.y));
+        if ((this.parent.player.cell.x == this.cell.x) || (this.parent.player.cell.y == this.cell.y)) {
+            var v = new Game.Vector(this.cell.x - this.parent.player.cell.x, this.cell.y - this.parent.player.cell.y);
+            return (v.len() <= 5);
+        }
+
+        return false;
     },
     /**
      * Fire

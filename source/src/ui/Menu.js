@@ -72,6 +72,11 @@ Game.UI.MenuMain = function () {
 
     var thisMenu = this;
 
+    var gameName = new PIXI.Text("Handless Bomber in Stripes", {font: "bold 54px monospace", fill: '#d4776a'});
+    gameName.anchor.set(0.5, 0.5);
+    gameName.y = -Game.screenHeight / 4;
+    this.addChild(gameName);
+
     var menu = new Game.UI.Menu([
         {
             caption: "New Game",

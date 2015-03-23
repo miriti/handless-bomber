@@ -82,50 +82,53 @@ extend(Game.mobs.Player, Game.mobs.Mob, {
      * @param delta
      */
     update: function (delta) {
-        // Controls
-        if (Game.Input.left()) {
-            this.x -= 200 * delta;
-            this.sprite.scale.set(-1, 1);
-        }
 
-        if (Game.Input.right()) {
-            this.x += 200 * delta;
-            this.sprite.scale.set(1, 1);
-        }
-
-        if (Game.Input.up())
-            this.y -= 200 * delta;
-
-        if (Game.Input.down())
-            this.y += 200 * delta;
-
-        if (Game.Input.left() || Game.Input.right() || Game.Input.up() || Game.Input.down()) {
-            this.sprite.changeState('running');
-        } else {
-            this.sprite.changeState('idle');
-        }
-
-        if (Game.Input.key(Game.Input.BUTTON_A)) {
-            if (!this._bombKey) {
-                this._bombKey = true;
-                this.layBomb();
+        if (!this.dead) {
+            // Controls
+            if (Game.Input.left()) {
+                this.x -= 200 * delta;
+                this.sprite.scale.set(-1, 1);
             }
-        } else {
-            this._bombKey = false;
-        }
 
-        if (Game.Input.key(Game.Input.BUTTON_B)) {
-            if (!this._explodeKey) {
-                this._explodeKey = true;
-                for (var i = 0; i < this.bombs.length; i++) {
-                    if ((!this.bombs[i].goneOff) && (this.bombs[i] instanceof Game.objects.RadioBomb)) {
-                        this.bombs[i].goOff();
-                        break;
+            if (Game.Input.right()) {
+                this.x += 200 * delta;
+                this.sprite.scale.set(1, 1);
+            }
+
+            if (Game.Input.up())
+                this.y -= 200 * delta;
+
+            if (Game.Input.down())
+                this.y += 200 * delta;
+
+            if (Game.Input.left() || Game.Input.right() || Game.Input.up() || Game.Input.down()) {
+                this.sprite.changeState('running');
+            } else {
+                this.sprite.changeState('idle');
+            }
+
+            if (Game.Input.key(Game.Input.BUTTON_A)) {
+                if (!this._bombKey) {
+                    this._bombKey = true;
+                    this.layBomb();
+                }
+            } else {
+                this._bombKey = false;
+            }
+
+            if (Game.Input.key(Game.Input.BUTTON_B)) {
+                if (!this._explodeKey) {
+                    this._explodeKey = true;
+                    for (var i = 0; i < this.bombs.length; i++) {
+                        if ((!this.bombs[i].goneOff) && (this.bombs[i] instanceof Game.objects.RadioBomb)) {
+                            this.bombs[i].goOff();
+                            break;
+                        }
                     }
                 }
+            } else {
+                this._explodeKey = false;
             }
-        } else {
-            this._explodeKey = false;
         }
 
         Game.mobs.Mob.prototype.update.call(this, delta);

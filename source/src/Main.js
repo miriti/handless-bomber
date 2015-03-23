@@ -101,6 +101,7 @@ Game.run = function () {
         .add('bonus', 'data/snd/bonus.wav')
         .add('clear', 'data/snd/clear.wav')
         .add('bomb_snd', 'data/snd/bomb.wav')
+        .add('hurt', 'data/snd/bomb.wav')
         .add('theme', 'data/snd/theme.mp3');
 
     var self = this;

@@ -1,7 +1,7 @@
 Game.maps.StageTwo = function (bonuses) {
     Game.maps.Map.call(this);
     this.name = 'Stage Two';
-    this.initGrid(21, 21, true);
+    this.initGrid(21, 11, true);
     this.rndBrickWalls();
 
     this.next = Game.maps.StageThree;
@@ -10,12 +10,11 @@ Game.maps.StageTwo = function (bonuses) {
         this.putMobRnd(new Game.mobs.FireStar(), false);
     }
 
-
-    this.getRndEmptyBrick().contains = new Game.tiles.Door();
-
     if (bonuses) {
         this.getRndEmptyBrick().contains = Math.random() > 0.5 ? new Game.tiles.BonusAddBomb() : new Game.tiles.BonusIncPower();
     }
+
+    this.getRndEmptyBrick().contains = new Game.tiles.Door();
 };
 
 extend(Game.maps.StageTwo, Game.maps.Map);
