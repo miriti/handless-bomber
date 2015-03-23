@@ -7,5 +7,6 @@ Game.tiles.BonusIncPower = function () {
 extend(Game.tiles.BonusIncPower, Game.tiles.BonusTile, {
     castEffect: function (player) {
         player.power += 1;
+        Game.currentScene.infoDie('Bomb power increased');
     }
 });

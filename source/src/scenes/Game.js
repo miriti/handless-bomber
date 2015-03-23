@@ -15,11 +15,81 @@ Game.Scenes.Game = function () {
     this.blinds = new Game.Scenes.Blinds();
     this.addChild(this.blinds);
 
-    this.changeMap(new Game.maps.StageOne());
+    this.changeMap(new Game.maps.StageOne(true));
 };
 
 extend(Game.Scenes.Game, Game.Scene, {
-    recreatePlayer: function() {
+    win: function () {
+        var self = this;
+        this.currentMap.paused = true;
+        this.blinds.closeFunc = Bounce.easeOut;
+        this.blinds.close(2, function () {
+            var winDie = new PIXI.Text("YOU WON!\npress any key", {
+                font: 'normal 72px monospace',
+                fill: '#9974aa',
+                align: 'center'
+            });
+            winDie.anchor.set(0.5, 0.5);
+            winDie.rotation = -Math.PI * 10;
+            winDie.scale.set(0, 0);
+
+            self.addChild(winDie);
+
+            TweenLite.to(winDie.scale, 1, {x: 0.9, y: 0.9});
+            TweenLite.to(winDie, 1, {
+                rotation: 0,
+                onComplete: function () {
+                    // TODO Win
+                }
+            });
+        });
+
+    },
+    /**
+     * Show some information to the user
+     *
+     * @param text
+     */
+    infoDie: function (text) {
+        var textContainer = new PIXI.Container();
+
+        var infoText_shadow = new PIXI.Text(text, {font: 'normal 48px monospace', fill: '#061639'});
+        infoText_shadow.anchor.set(0.5, 0.5);
+        infoText_shadow.position.set(2, 2);
+        textContainer.addChild(infoText_shadow);
+
+        var infoText = new PIXI.Text(text, {font: 'normal 48px monospace', fill: '#d4776a'});
+        infoText.anchor.set(0.5, 0.5);
+        textContainer.addChild(infoText);
+
+        textContainer.scale.set(100, 100);
+        textContainer.alpha = 0;
+
+        this.addChild(textContainer);
+
+        TweenLite.to(textContainer, 1, {alpha: 1});
+        TweenLite.to(textContainer.scale, 1, {
+            x: 1,
+            y: 1,
+            onComplete: function () {
+                TweenLite.to(textContainer.scale, 2, {
+                    x: 0.95,
+                    y: 0.95,
+                    onComplete: function () {
+                        TweenLite.to(textContainer, 1, {alpha: 0});
+                        TweenLite.to(textContainer.scale, 1, {
+                            x: 100,
+                            y: 100,
+                            onComplete: function () {
+                                textContainer.parent.removeChild(textContainer);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    },
+    recreatePlayer: function () {
         var newPlayer = new Game.mobs.Player();
 
         copyProps(this.player, newPlayer, ['lives', 'power', 'bombCapacity']);
@@ -65,7 +135,7 @@ extend(Game.Scenes.Game, Game.Scene, {
     },
     restartMap: function () {
         if (this.currentMap !== null) {
-            this.changeMap(new this.currentMap.constructor());
+            this.changeMap(new this.currentMap.constructor(false));
         }
     },
     changeMap: function (map) {
@@ -87,7 +157,11 @@ extend(Game.Scenes.Game, Game.Scene, {
             });
         }
 
-        var levelName = new PIXI.Text(map.name, {font: 'normal 48px monospace', fill: '#9974aa', align: 'center'});
+        var levelName = new PIXI.Text(map.name + "\nLives left: " + self.player.lives, {
+            font: 'normal 48px monospace',
+            fill: '#9974aa',
+            align: 'center'
+        });
         levelName.anchor.set(0.5, 0.5);
         this.addChild(levelName);
 

@@ -15,17 +15,17 @@ Game.UI.MenuItem = function (caption, callback) {
     this.interactive = true;
 
     var self = this;
-    this.addEventListener('click', function () {
+    this.click = function () {
         callback.call(self);
-    });
+    };
 
-    this.addEventListener('mouseover', function () {
+    this.mouseover = function () {
         self.focus(true);
-    });
+    };
 
-    this.addEventListener('mouseout', function () {
+    this.mouseout = function () {
         self.focus(false);
-    });
+    };
 };
 
 extend(Game.UI.MenuItem, PIXI.Container, {

@@ -193,7 +193,7 @@ extend(Game.maps.Map, Game.GameObject, {
                     var t = this.getTile(i, j);
                     this.removeTile(i, j);
 
-                    if ((t != false) && (t instanceof Game.tiles.BrickWall) && (t.contains !== null)) {
+                    if ((t !== false) && (t instanceof Game.tiles.BrickWall) && (t.contains !== null)) {
                         this.getRndEmptyBrick().contains = t.contains;
                     }
                 }
@@ -239,6 +239,7 @@ extend(Game.maps.Map, Game.GameObject, {
 
         if (this.enemyCount() == 0) {
             if (!this.cleared) {
+                Game.currentScene.infoDie("Level cleared!");
                 this.clearSound.play();
                 this.cleared = true;
             }

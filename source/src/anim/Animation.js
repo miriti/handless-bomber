@@ -31,10 +31,6 @@ Game.anim.Animation = function (texture, frameWidth, frameHeight) {
 extend(Game.anim.Animation, Game.GameObject, {
     update: function (delta) {
         Game.GameObject.prototype.update.call(this, delta);
-        this.movieClip.update({
-            data: {
-                deltaTime: delta * 60
-            }
-        });
+        this.movieClip.update(delta * 60);
     }
 });

@@ -18,8 +18,10 @@ extend(Game.tiles.Door, Game.tiles.Tile, {
                 if ((mob instanceof Game.mobs.Player) && (this.parent.cleared)) {
                     this.exited = true;
                     mob.hasControl = false;
-                    Game.currentScene.changeMap(new Game.currentScene.currentMap.next());
+                    Game.currentScene.changeMap(new Game.currentScene.currentMap.next(true));
                 }
+            }else{
+                Game.currentScene.win();
             }
         }
     }
