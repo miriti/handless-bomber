@@ -7,37 +7,37 @@ var gulp = require('gulp'),
 process.chdir('..');
 
 gulp.task('lint', function () {
-    return gulp.src(['source/src/*.js'])
+    return gulp.src(['src/*.js'])
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
 gulp.task('compile', ['lint'], function () {
     var files = require('./list.json').map(function (name) {
-        return 'source/src/' + name
+        return 'src/' + name
     });
 
     return gulp.src(files).pipe(closureCompiler({
-        compilerPath: 'source/tools/closure-compiler/compiler.jar',
+        compilerPath: 'tools/closure-compiler/compiler.jar',
         compilerFlags: {},
-        fileName: 'release/game.tmp.js'
+        fileName: 'dist/game.tmp.js'
         }));
 });
 
 gulp.task('concat', ['compile'], function () {
     return gulp.src([
-        'source/src/lib/pixi/bin/pixi.min.js',
-        'source/src/lib/buzz/dist/buzz.min.js',
-        'source/src/lib/greensock/src/minified/TweenLite.min.js',
-        'source/src/lib/greensock/src/minified/easing/EasePack.min.js',
-        'release/game.tmp.js'
+        'src/lib/pixi/bin/pixi.min.js',
+        'src/lib/buzz/dist/buzz.min.js',
+        'src/lib/greensock/src/minified/TweenLite.min.js',
+        'src/lib/greensock/src/minified/easing/EasePack.min.js',
+        'dist/game.tmp.js'
     ])
         .pipe(concat('game.js'))
-        .pipe(gulp.dest('release/'));
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('cleanup', ['concat'], function () {
-    del(['release/game.tmp.js']);
+    del(['dist/game.tmp.js']);
 });
 
 gulp.task('default', function () {

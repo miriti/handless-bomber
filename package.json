@@ -1,8 +1,8 @@
 {
-  "name": "igdc120",
-  "version": "0.1.0",
+  "name": "handless-bomber",
+  "version": "0.1.1",
   "description": "Bomberman",
-  "main": "gulpfile.js",
+  "main": "dist/index.html",
   "dependencies": {
     "gulp-concat": "^2.5.2",
     "gulp-closure-compiler": "^0.2.17",
