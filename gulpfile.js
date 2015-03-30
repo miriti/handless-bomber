@@ -4,8 +4,6 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     del = require('del');
 
-process.chdir('..');
-
 gulp.task('lint', function () {
     return gulp.src(['src/*.js'])
         .pipe(jshint())
